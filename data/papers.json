@@ -1,0 +1,436 @@
+[
+  {
+    "paper_id": "P01",
+    "year": 2013,
+    "title": "Evolution of phases and ferroelectric properties of thin Hf0.5Zr0.5O2 films according to the thickness and annealing temperature",
+    "journal": "Applied Physics Letters",
+    "doi": "10.1063/1.4811483",
+    "source_url": "https://doi.org/10.1063/1.4811483",
+    "stack_or_scope": "TiN/HZO/TiN(Pt cap)",
+    "key_reported_conditions": "5.5/10/17/25 nm; 400–800°C N2 RTA",
+    "verification_note": "Original PDF in prior study; polarization points require figure extraction",
+    "status": "원문 숫자 추가추출",
+    "cohort": "core"
+  },
+  {
+    "paper_id": "P02",
+    "year": 2016,
+    "title": "A study on the wake-up effect of ferroelectric Hf0.5Zr0.5O2 films by pulse-switching measurement",
+    "journal": "Nanoscale",
+    "doi": "10.1039/c5nr05339k",
+    "source_url": "https://pubs.rsc.org/en/content/articlehtml/2016/nr/c5nr05339k",
+    "stack_or_scope": "Pt/TiN/HZO/TiN",
+    "key_reported_conditions": "9 nm; 500°C, 30 s N2; 100-cycle wake-up",
+    "verification_note": "Measured 2Pr evolution graph; source numeric to digitize",
+    "status": "그래프 수치 추가추출",
+    "cohort": "core"
+  },
+  {
+    "paper_id": "P03",
+    "year": 2018,
+    "title": "Effects of Capping Electrode on Ferroelectric Properties of Hf0.5Zr0.5O2 Thin Films",
+    "journal": "IEEE Electron Device Letters",
+    "doi": "10.1109/LED.2018.2846570",
+    "source_url": "https://ieeexplore.ieee.org/document/8382182/",
+    "stack_or_scope": "TE/HZO/TiN",
+    "key_reported_conditions": "W vs Au TE; 2Pr 38.72 vs 22.83",
+    "verification_note": "Abstract explicit two 2Pr values; other process fields need PDF",
+    "status": "2Pr 수치 확인",
+    "cohort": "core"
+  },
+  {
+    "paper_id": "P04",
+    "year": 2019,
+    "title": "Improvement of Endurance in HZO-Based Ferroelectric Capacitor Using Ru Electrode",
+    "journal": "IEEE Electron Device Letters",
+    "doi": "10.1109/LED.2019.2944960",
+    "source_url": "https://doi.org/10.1109/LED.2019.2944960",
+    "stack_or_scope": "Ru/HZO/Ru vs TiN/HZO/TiN",
+    "key_reported_conditions": "Ru: polarization ~20 μC/cm² metric not specified as 2Pr in abstract",
+    "verification_note": "Do not treat ~20 as 2Pr before full text",
+    "status": "2Pr 정의 확인 필요",
+    "cohort": "core"
+  },
+  {
+    "paper_id": "P05",
+    "year": 2020,
+    "title": "Back-End-of-Line Compatible Low-Temperature Furnace Anneal for Ferroelectric Hafnium Zirconium Oxide Formation",
+    "journal": "physica status solidi (a)",
+    "doi": "10.1002/pssa.201900840",
+    "source_url": "https://onlinelibrary.wiley.com/doi/full/10.1002/pssa.201900840",
+    "stack_or_scope": "TiN/HZO/TiN",
+    "key_reported_conditions": "5–20 nm; 400°C RTA/furnace; Pr 10/19/20 by thickness",
+    "verification_note": "Explicit Pr only; do NOT double to 2Pr without traceable definition",
+    "status": "Pr 원문 수치 확인",
+    "cohort": "core"
+  },
+  {
+    "paper_id": "P06",
+    "year": 2021,
+    "title": "The Influence of Top and Bottom Metal Electrodes on Ferroelectricity of Hafnia",
+    "journal": "IEEE Transactions on Electron Devices",
+    "doi": "10.1109/TED.2020.3046173",
+    "source_url": "https://pure.kaist.ac.kr/en/publications/the-influence-of-top-and-bottom-metal-electrodes-on-ferroelectric/",
+    "stack_or_scope": "TE/HZO/TiN and TiN/HZO/BE",
+    "key_reported_conditions": "W electrodes; reported 48.2 and 58.7 remanent polarization",
+    "verification_note": "Source abstract doesn't explicitly label 2Pr for those values",
+    "status": "2Pr 정의 확인 필요",
+    "cohort": "core"
+  },
+  {
+    "paper_id": "P07",
+    "year": 2021,
+    "title": "Low-thermal-budget (300 °C) ferroelectric TiN/Hf0.5Zr0.5O2/TiN capacitors realized using high-pressure annealing",
+    "journal": "Applied Physics Letters",
+    "doi": "10.1063/5.0075466",
+    "source_url": "https://yonsei.elsevierpure.com/en/publications/low-thermal-budget-300-c-ferroelectric-tinhfsub05subzrsub05subosu/",
+    "stack_or_scope": "TiN/HZO/TiN",
+    "key_reported_conditions": "300°C HPA, 15 atm; 2Pr ~26; HZO <10 nm",
+    "verification_note": "Special high-pressure treatment; not conventional RTA",
+    "status": "2Pr 수치 확인",
+    "cohort": "extended"
+  },
+  {
+    "paper_id": "P08",
+    "year": 2022,
+    "title": "Characterization of Ferroelectric Characteristics for Hafnium Zirconium Oxide Capacitors with Refractory Electrodes",
+    "journal": "ECS Journal of Solid State Science and Technology",
+    "doi": "10.1149/2162-8777/ac6f1c",
+    "source_url": "https://scholar.nycu.edu.tw/en/publications/characterization-of-ferroelectric-characteristics-for-hafnium-zir/",
+    "stack_or_scope": "TiN/TaN/W/Mo / HZO / TiN/TaN/W/Mo",
+    "key_reported_conditions": "PMA 400–600°C; 2Pr graphs",
+    "verification_note": "Relevant but numerical points need paper full text",
+    "status": "그래프 수치 추가추출",
+    "cohort": "core"
+  },
+  {
+    "paper_id": "P09",
+    "year": 2022,
+    "title": "Improved Ferroelectric Properties in Hf0.5Zr0.5O2 Thin Films by Microwave Annealing",
+    "journal": "Nanomaterials",
+    "doi": "10.3390/nano12173001",
+    "source_url": "https://www.mdpi.com/2079-4991/12/17/3001",
+    "stack_or_scope": "TiN/HZO/TiN",
+    "key_reported_conditions": "TiN 20nm / HZO 10nm / TiN 20nm; 500°C 30s; 2Pr RTA 40, MWA 63",
+    "verification_note": "Direct abstract & methods",
+    "status": "조건·2Pr 확인",
+    "cohort": "core+extended"
+  },
+  {
+    "paper_id": "P10",
+    "year": 2022,
+    "title": "On the Reliability of HZO-Based Ferroelectric Capacitors: The Cases of Ru and TiN Electrodes",
+    "journal": "Nanomaterials",
+    "doi": "10.3390/nano12173059",
+    "source_url": "https://www.mdpi.com/2079-4991/12/17/3059",
+    "stack_or_scope": "TiN or TiN/Ru / HZO / TiN",
+    "key_reported_conditions": "10nm; TiN BE 10nm; TE TiN 20nm / Ru 3nm+TiN20nm; 400°C ALD in situ",
+    "verification_note": "4 explicit pristine/woken 2Pr values",
+    "status": "조건·2Pr 확인",
+    "cohort": "extended"
+  },
+  {
+    "paper_id": "P11",
+    "year": 2023,
+    "title": "Impact of Ferroelectric Layer Thickness on Reliability of Back-End-of-Line-Compatible Hafnium Zirconium Oxide Films",
+    "journal": "Advanced Engineering Materials",
+    "doi": "10.1002/adem.202201124",
+    "source_url": "https://doi.org/10.1002/adem.202201124",
+    "stack_or_scope": "TiN/HZO/TiN",
+    "key_reported_conditions": "7/8/10 nm; 25–175°C operation; varied measurement field",
+    "verification_note": "2Pr values need figures/digitizing",
+    "status": "그래프 수치 추가추출",
+    "cohort": "core"
+  },
+  {
+    "paper_id": "P12",
+    "year": 2023,
+    "title": "Improved Endurance of Ferroelectric Hf0.5Zr0.5O2 Using Laminated-Structure Interlayer",
+    "journal": "Nanomaterials",
+    "doi": "10.3390/nano13101608",
+    "source_url": "https://www.mdpi.com/2079-4991/13/10/1608",
+    "stack_or_scope": "TiN/HZO lamination/TiN",
+    "key_reported_conditions": "12nm; 40nm TiN both; ALD 280°C; RTA 500°C 30s N2",
+    "verification_note": "Three explicit Pr and endurance 2Pr values; composition superlattice variant",
+    "status": "2Pr 수치 확인",
+    "cohort": "extended"
+  },
+  {
+    "paper_id": "P13",
+    "year": 2024,
+    "title": "Enhanced remnant polarization in ferroelectric Hf0.5Zr0.5O2 thin film capacitors through Mo top electrode by post-metallization annealing treatment",
+    "journal": "Physica B: Condensed Matter",
+    "doi": "10.1016/j.physb.2024.416024",
+    "source_url": "https://www.sciencedirect.com/science/article/pii/S092145262400365X",
+    "stack_or_scope": "Mo/HZO/TiN",
+    "key_reported_conditions": "HZO 10nm; bottom TiN 50nm; 500°C 30s N2; 2Pr ~54",
+    "verification_note": "Publisher abstract and methods snippet; Mo TE thickness missing",
+    "status": "2Pr 수치 확인",
+    "cohort": "core"
+  },
+  {
+    "paper_id": "P14",
+    "year": 2024,
+    "title": "Nanoscale Investigation of the Effect of Annealing Temperature on the Polarization Switching Dynamics of Hf0.5Zr0.5O2 Thin Films",
+    "journal": "Advanced Materials Interfaces",
+    "doi": "10.1002/admi.202400156",
+    "source_url": "https://advanced.onlinelibrary.wiley.com/doi/full/10.1002/admi.202400156",
+    "stack_or_scope": "Mo/HZO/TiN",
+    "key_reported_conditions": "Mo 20/HZO 24/TiN 10 nm; sputter; 550–700°C 10s N2; 2Pr 33.3/33.3/28.5",
+    "verification_note": "Full text exact conditions and values",
+    "status": "조건·2Pr 확인",
+    "cohort": "extended"
+  },
+  {
+    "paper_id": "P15",
+    "year": 2024,
+    "title": "Oxygen reservoir effect of Tungsten trioxide electrode on endurance performance of ferroelectric capacitors for FeRAM applications",
+    "journal": "Scientific Reports",
+    "doi": "10.1038/s41598-024-80523-x",
+    "source_url": "https://www.nature.com/articles/s41598-024-80523-x",
+    "stack_or_scope": "W/HZO/W or WO3/HZO/WO3",
+    "key_reported_conditions": "10nm HZO; ALD 250°C; RTA 400–700°C 30s N2; max pristine 2Pr 107.9",
+    "verification_note": "Extreme value flagged for review prior to model; electrode thickness not found",
+    "status": "이상치 재검토",
+    "cohort": "core+extended"
+  },
+  {
+    "paper_id": "P16",
+    "year": 2024,
+    "title": "Low Voltage High Polarization by Optimizing Scavenged WNx Interfacial Capping Layer at the Ru/HfxZr1−xO2 Interface and Evidence of Fatigue Mechanism",
+    "journal": "Advanced Materials Interfaces",
+    "doi": "10.1002/admi.202400185",
+    "source_url": "https://advanced.onlinelibrary.wiley.com/doi/full/10.1002/admi.202400185",
+    "stack_or_scope": "Ru/WNx/HZO/TiN",
+    "key_reported_conditions": "WNx ICL 2/6nm; 400°C 1h N2 furnace; 2Pr 25/2 at 2V",
+    "verification_note": "Extended multilayer; preserve interlayer as explicit feature",
+    "status": "조건·2Pr 확인",
+    "cohort": "extended"
+  },
+  {
+    "paper_id": "P17",
+    "year": 2024,
+    "title": "Ferroelectric Enhancement in a TiN/Hf1−xZrxO2/W Device with Controlled Oxidation of the Bottom Electrode",
+    "journal": "ACS Applied Electronic Materials",
+    "doi": "10.1021/acsaelm.3c01502",
+    "source_url": "https://pubs.acs.org/doi/10.1021/acsaelm.3c01502",
+    "stack_or_scope": "TiN/HZO/W, WOx, WO3",
+    "key_reported_conditions": "7nm HZO; 400°C; 2Pr pristine 24.8/27.9/10.3; after 100 cycles 38/43/31",
+    "verification_note": "Full text states 2Pr vs electrode oxidation and precycle",
+    "status": "조건·2Pr 확인",
+    "cohort": "extended"
+  },
+  {
+    "paper_id": "P18",
+    "year": 2024,
+    "title": "Laser-Induced Phase Control of Morphotropic Phase Boundary Hafnium–Zirconium Oxide",
+    "journal": "ACS Applied Materials & Interfaces",
+    "doi": "10.1021/acsami.4c10813",
+    "source_url": "https://pubs.acs.org/doi/10.1021/acsami.4c10813",
+    "stack_or_scope": "W/HZO/W or TiN/HZO/TiN",
+    "key_reported_conditions": "10nm; CW laser annealing; 2Pr 47 W / 30 TiN",
+    "verification_note": "Laser anneal must not be pooled into RTA without type feature",
+    "status": "조건·2Pr 확인",
+    "cohort": "extended"
+  },
+  {
+    "paper_id": "P19",
+    "year": 2024,
+    "title": "Investigation of Hf0.5Zr0.5O2 Ferroelectric Films at Low Thermal Budget (300 °C)",
+    "journal": "IEEE Transactions on Electron Devices",
+    "doi": "10.1109/TED.2024.3418372",
+    "source_url": "https://doi.org/10.1109/TED.2024.3418372",
+    "stack_or_scope": "TiN/HZO/TiN",
+    "key_reported_conditions": "No post anneal; ALD 280/300°C; 2Pr 17.6/21.8",
+    "verification_note": "HZO thickness/metal thickness require full text",
+    "status": "2Pr 수치 확인",
+    "cohort": "extended"
+  },
+  {
+    "paper_id": "P20",
+    "year": 2025,
+    "title": "Fabrication and Characterization of Ferroelectric Capacitors with a Symmetric Hybrid TiN/W/HZO/W/TiN Electrode Structure",
+    "journal": "Materials",
+    "doi": "10.3390/ma18153547",
+    "source_url": "https://www.mdpi.com/1996-1944/18/15/3547",
+    "stack_or_scope": "TiN/W/HZO/W/TiN",
+    "key_reported_conditions": "10nm HZO; TiN BE50nm; TiN TE50nm nominal; 0/5/10/20nm W; 700°C 30s N2",
+    "verification_note": "6+ explicit 2Pr values, 10^4 pre-cycles; top nominal thickness ambiguity review",
+    "status": "조건·2Pr 확인",
+    "cohort": "extended"
+  },
+  {
+    "paper_id": "P01",
+    "title": "Asapu et al., Front. Mater. 9:969188 (2022)",
+    "source_url": "https://www.frontiersin.org/journals/materials/articles/10.3389/fmats.2022.969188/full",
+    "cohort": "데이터2"
+  },
+  {
+    "paper_id": "P02",
+    "title": "Wang et al., Chin. Phys. B 32, 097701 (2023)",
+    "source_url": "https://cpb.iphy.ac.cn/article/doi/10.1088/1674-1056/aca9c6",
+    "cohort": "데이터2"
+  },
+  {
+    "paper_id": "P03",
+    "title": "Kim et al., Nanomaterials 12, 548 (2022)",
+    "source_url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8839501/",
+    "cohort": "데이터2"
+  },
+  {
+    "paper_id": "P04",
+    "title": "Lenox et al., Phys. Status Solidi A (2024)",
+    "source_url": "https://par.nsf.gov/biblio/10475417-impact-electric-field-pulse-duration-ferroelectric-hafnium-zirconium-oxide-thin-film-capacitor-endurance",
+    "cohort": "데이터2"
+  },
+  {
+    "paper_id": "P05",
+    "title": "Hsain et al., Nanotechnology 34, 125703 (2023)",
+    "source_url": "https://par.nsf.gov/servlets/purl/10392009",
+    "cohort": "데이터2"
+  },
+  {
+    "paper_id": "P06",
+    "title": "Alessandri et al., IEEE EDL 39, 1780 (2018)",
+    "source_url": "https://strand.nd.edu/sites/default/files/publications/2024-10/2018%20Cristobal%20Alessandri%20EDL.pdf",
+    "cohort": "데이터2"
+  },
+  {
+    "paper_id": "P07",
+    "title": "arXiv:2212.10858 (2024) 전극 7종 비교",
+    "source_url": "https://arxiv.org/pdf/2212.10858",
+    "cohort": "데이터2"
+  },
+  {
+    "paper_id": "P08",
+    "title": "IEEE EDL (2022), SJTU",
+    "source_url": "https://sigroup.sjtu.edu.cn/files/EDL_HZO_2022.pdf",
+    "cohort": "데이터2"
+  },
+  {
+    "paper_id": "P09",
+    "title": "Wang et al., J. Mater. Sci. Technol. 104, 1 (2022)",
+    "source_url": "https://www.jmst.org/EN/abstract/abstract31437.shtml",
+    "cohort": "데이터2"
+  },
+  {
+    "paper_id": "P10",
+    "title": "Nanomaterials 13, 900 (2023) DP vs RP ALD",
+    "source_url": "https://www.mdpi.com/2079-4991/13/5/900",
+    "cohort": "데이터2"
+  },
+  {
+    "paper_id": "P11",
+    "title": "4nm HZO 두께 스케일링 (ACS AEM 2022)",
+    "source_url": "https://www.pubmed.gov/36319949/",
+    "cohort": "데이터2"
+  },
+  {
+    "paper_id": "P12",
+    "title": "Wu et al., J. Materiomics 12(3) (2026)",
+    "source_url": "https://www.sciopen.com/article/10.1016/j.jmat.2026.101175",
+    "cohort": "데이터2"
+  },
+  {
+    "paper_id": "P13",
+    "title": "Teng et al., NYCU 학회 초록 (2024)",
+    "source_url": "https://fsrc.nycu.edu.tw/Conference/wp-content/uploads/2024/08/34theme3-簡昭欣-鄧力誠.pdf",
+    "cohort": "데이터2"
+  },
+  {
+    "paper_id": "P14",
+    "title": "Liang et al., IEEE EDL 42, 1299 (2021) — 리뷰 재인용",
+    "source_url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC13666695/",
+    "cohort": "데이터2"
+  },
+  {
+    "paper_id": "P15",
+    "title": "Wang et al. (Nanomaterials 2026 리뷰 ref.84) — 재인용",
+    "source_url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC13666695/",
+    "cohort": "데이터2"
+  },
+  {
+    "paper_id": "P16",
+    "title": "Lyu et al., Nanoscale 12, 11280 (2020)",
+    "source_url": "https://arxiv.org/abs/2005.14477v1",
+    "cohort": "데이터2"
+  },
+  {
+    "paper_id": "P17",
+    "title": "arXiv:2501.06754 (2025) CeO2 계면",
+    "source_url": "https://arxiv.org/pdf/2501.06754",
+    "cohort": "데이터2"
+  },
+  {
+    "paper_id": "P18",
+    "title": "arXiv:2409.00635 (Nanoscale 2025) 피로·회복",
+    "source_url": "https://www.arxiv.org/pdf/2409.00635",
+    "cohort": "데이터2"
+  },
+  {
+    "paper_id": "P19",
+    "title": "Nanomaterials 12, 3059 (2022) Ru vs TiN",
+    "source_url": "https://www.mdpi.com/2079-4991/12/17/3059",
+    "cohort": "데이터2"
+  },
+  {
+    "paper_id": "P20",
+    "title": "Kashir et al., arXiv:2009.04714",
+    "source_url": "https://www.arxiv.org/pdf/2009.04714",
+    "cohort": "데이터2"
+  },
+  {
+    "paper_id": "P21",
+    "title": "Nano Convergence 9, 50 (2022)",
+    "source_url": "https://link.springer.com/article/10.1186/s40580-022-00342-6",
+    "cohort": "데이터2"
+  },
+  {
+    "paper_id": "P22",
+    "title": "arXiv:2602.04133 (2026)",
+    "source_url": "https://arxiv.org/pdf/2602.04133",
+    "cohort": "데이터2"
+  },
+  {
+    "paper_id": "P23",
+    "title": "Univ. Nottingham 저장소 — 피로 메커니즘",
+    "source_url": "https://nottingham-repository.worktribe.com/OutputFile/37540744",
+    "cohort": "데이터2"
+  },
+  {
+    "paper_id": "P24",
+    "title": "Improved Endurance … Laminated-Structure Interlayer (2023)",
+    "source_url": "https://doaj.org/article/1cc8ce8acf0944b4b78bc5e73a47ad3a",
+    "cohort": "데이터2"
+  },
+  {
+    "paper_id": "P25",
+    "title": "Mamidala & Wernersson, IEEE TED (2026)",
+    "source_url": "https://lup.lub.lu.se/search/files/232932052/CryoMIM_Interlayer_TED_MandRev_NoHighlight.pdf.pdf",
+    "cohort": "데이터2"
+  },
+  {
+    "paper_id": "P26",
+    "title": "Nanomaterials 12, 3001 (2022) MWA vs RTA",
+    "source_url": "https://www.mdpi.com/2079-4991/12/17/3001",
+    "cohort": "데이터2"
+  },
+  {
+    "paper_id": "P27",
+    "title": "Liu et al., Adv. Sci. (2025) Zr-rich layer",
+    "source_url": "https://advanced.onlinelibrary.wiley.com/doi/10.1002/advs.202509384",
+    "cohort": "데이터2"
+  },
+  {
+    "paper_id": "X01",
+    "title": "Ryu et al., Zr-doped HfO2 (NSF 공개원고)",
+    "source_url": "https://par.nsf.gov/servlets/purl/10084588",
+    "cohort": "데이터2"
+  },
+  {
+    "paper_id": "X02",
+    "title": "ESSDERC 2023, TiN/HZO/Al2O3/InAs",
+    "source_url": "https://lup.lub.lu.se/search/files/194526603/ESSDERC_2023_v4_corrected.pdf",
+    "cohort": "데이터2"
+  }
+]
