@@ -1655,79 +1655,257 @@
     }
 
     function parseCSV(text) {
-      const rows = [];
-      let row = [];
-      let field = "";
-      let quoted = false;
+  /*
+   * 제목·설명 행과 셀 내부 줄바꿈이 있는 CSV를 처리합니다.
+   * 기존 정규화 CSV와 HZO 데이터셋 v3 형식을 지원합니다.
+   * 값을 검증하거나 학습 승인하지는 않습니다.
+   */
 
-      text = text.replace(/^\uFEFF/, "");
+  const rows = [];
+  let row = [];
+  let field = "";
+  let quoted = false;
 
-      for (let i = 0; i < text.length; i++) {
-        const char = text[i];
+  text = text.replace(/^\uFEFF/, "");
 
-        if (char === '"') {
-          if (quoted && text[i + 1] === '"') {
-            field += '"';
-            i++;
-          } else {
-            quoted = !quoted;
-          }
-        } else if (char === "," && !quoted) {
-          row.push(field);
-          field = "";
-        } else if ((char === "\n" || char === "\r") && !quoted) {
-          if (char === "\r" && text[i + 1] === "\n") i++;
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
 
-          row.push(field);
-
-          if (row.some((value) => value.trim() !== "")) {
-            rows.push(row);
-          }
-
-          row = [];
-          field = "";
-        } else {
-          field += char;
-        }
+    if (char === '"') {
+      if (quoted && text[i + 1] === '"') {
+        field += '"';
+        i++;
+      } else {
+        quoted = !quoted;
       }
-
-      if (quoted) {
-        throw new Error("CSV의 따옴표가 닫히지 않았습니다.");
+    } else if (char === "," && !quoted) {
+      row.push(field);
+      field = "";
+    } else if ((char === "\n" || char === "\r") && !quoted) {
+      if (char === "\r" && text[i + 1] === "\n") {
+        i++;
       }
 
       row.push(field);
 
-      if (row.some((value) => value.trim() !== "")) {
+      if (row.some(value => value.trim() !== "")) {
         rows.push(row);
       }
 
-      if (rows.length < 2) {
-        throw new Error("CSV에 헤더와 데이터 행이 필요합니다.");
-      }
+      row = [];
+      field = "";
+    } else {
+      field += char;
+    }
+  }
 
-      const headers = rows.shift().map((header) => header.trim());
+  if (quoted) {
+    throw new Error("CSV의 따옴표가 닫히지 않았습니다.");
+  }
 
-      for (const name of ["sample_id", "metric", "two_pr"]) {
-        if (!headers.includes(name)) {
-          throw new Error("필수 CSV 열이 없습니다: " + name);
-        }
-      }
+  row.push(field);
 
-      return rows.map((values) => {
+  if (row.some(value => value.trim() !== "")) {
+    rows.push(row);
+  }
+
+  if (rows.length < 2) {
+    throw new Error("CSV에 열 제목과 실험 데이터가 필요합니다.");
+  }
+
+  const tidy = value =>
+    String(value || "").replace(/\s+/g, "").trim();
+
+  /*
+   * 기존 정규화 CSV:
+   * sample_id, metric, two_pr 등의 열을 그대로 읽습니다.
+   */
+  const normalizedHeaderIndex = rows.findIndex(values => {
+    const names = values.map(value => String(value).trim());
+
+    return ["sample_id", "metric", "two_pr"]
+      .every(name => names.includes(name));
+  });
+
+  if (normalizedHeaderIndex >= 0) {
+    const headers = rows[normalizedHeaderIndex]
+      .map(value => String(value).trim());
+
+    return rows
+      .slice(normalizedHeaderIndex + 1)
+      .filter(values => values.some(value => value.trim() !== ""))
+      .map(values => {
         const record = {};
 
         headers.forEach((header, index) => {
-          record[header] = values[index] === undefined
-            ? ""
-            : values[index];
+          record[header] =
+            values[index] === undefined ? "" : values[index];
         });
 
         return record;
       });
+  }
+
+  /*
+   * HZO 데이터셋 v3:
+   * 제목·설명 줄을 건너뛰고 실제 열 제목을 찾습니다.
+   */
+  const headerIndex = rows.findIndex(values => {
+    const names = values.map(tidy);
+
+    return names.includes("ID") &&
+      names.includes("소자구조") &&
+      names.includes("학습사용");
+  });
+
+  if (headerIndex < 0) {
+    throw new Error(
+      "실험 데이터 열 제목을 찾지 못했습니다. " +
+      "ID·소자구조·학습사용 열이 있는 데이터 시트를 CSV로 저장하세요."
+    );
+  }
+
+  const headers = rows[headerIndex].map(tidy);
+
+  const exactIndex = name => headers.indexOf(tidy(name));
+
+  const prefixIndex = prefix =>
+    headers.findIndex(name => name.startsWith(tidy(prefix)));
+
+  const valueAt = (values, index) =>
+    index >= 0 && values[index] !== undefined
+      ? String(values[index]).trim()
+      : "";
+
+  const get = (values, name) =>
+    valueAt(values, exactIndex(name));
+
+  const getPrefix = (values, prefix) =>
+    valueAt(values, prefixIndex(prefix));
+
+  /*
+   * 첫 번째 측정 블록은 2Pr,
+   * 뒤의 반복되는 전압·주파수 열은 Endurance 블록입니다.
+   */
+  const twoPrIndex = headers.findIndex(name =>
+    /^2Pr(?:$|[?μµu(（])/.test(name)
+  );
+
+  if (twoPrIndex < 0) {
+    throw new Error("2Pr 측정값 열을 찾지 못했습니다.");
+  }
+
+  function beforeTwoPrIndex(prefix) {
+    return headers.findIndex((name, index) =>
+      index < twoPrIndex && name.startsWith(tidy(prefix))
+    );
+  }
+
+  const voltageIndex = beforeTwoPrIndex("인가전압");
+  const frequencyIndex = beforeTwoPrIndex("주파수");
+  const pulseIndex = beforeTwoPrIndex("펄스폭");
+
+  const numeric = value => {
+    if (value === "" || value === null || value === undefined) {
+      return null;
     }
 
-    async function importFile() {
-      const file = byId("dataFile").files[0];
+    const number = Number(value);
+    return Number.isFinite(number) ? number : null;
+  };
+
+  const records = [];
+
+  for (const values of rows.slice(headerIndex + 1)) {
+    const id = get(values, "ID");
+
+    if (!id || id === "ID") {
+      continue;
+    }
+
+    const twoPr = numeric(valueAt(values, twoPrIndex));
+
+    /*
+     * 원본의 모든 열을 번호와 함께 보존합니다.
+     * 반복되는 열 이름도 덮어쓰지 않습니다.
+     */
+    const original = values.map((value, index) => ({
+      column: index + 1,
+      header: headers[index] || "",
+      value: value
+    }));
+
+    const originalNote = get(values, "비고");
+    const recommendation = get(values, "학습사용");
+
+    records.push({
+      sample_id: id,
+      paper: get(values, "출처키"),
+      doi: get(values, "DOI") || get(values, "출처DOI"),
+      source_url: get(values, "원문") || get(values, "출처URL"),
+      source_locator: get(values, "Fig/Table"),
+
+      metric: twoPr !== null ? "2Pr" : "no_2Pr_label",
+      two_pr: twoPr,
+
+      structure: get(values, "소자구조"),
+
+      /*
+       * 전극 문자열은 그대로 보존합니다.
+       * 예: W 45nm + Pt 50nm를 단일 W 전극으로 바꾸지 않습니다.
+       */
+      top: get(values, "상부전극"),
+      bottom: get(values, "하부전극"),
+
+      hzo_nm: numeric(getPrefix(values, "HZO두께")),
+
+      /*
+       * 전극 전체 두께와 삽입층 두께는 문자열에서 추측하지 않습니다.
+       */
+      top_nm: null,
+      bottom_nm: null,
+      top_interlayer_nm: null,
+      bottom_interlayer_nm: null,
+
+      /*
+       * RTA라는 열 이름만으로 각 행의 열처리 방식을
+       * 검증 완료로 판단하지 않습니다.
+       */
+      anneal_type: null,
+      anneal_c: numeric(getPrefix(values, "RTA온도")),
+      anneal_s: numeric(getPrefix(values, "RTA시간")),
+      atmosphere: get(values, "분위기"),
+
+      voltage_v: numeric(valueAt(values, voltageIndex)),
+      frequency_hz: numeric(valueAt(values, frequencyIndex)),
+      pulse_s: numeric(valueAt(values, pulseIndex)),
+
+      measurement_state: get(values, "측정상태"),
+      measurement_method: "",
+      wake_cycles: null,
+
+      deposition: get(values, "증착법"),
+      ald_c: numeric(getPrefix(values, "증착온도")),
+
+      verification: "v3 가져오기 · 미승인 · 원문 검토 필요",
+
+      notes:
+        "원본 학습사용 표기: " + recommendation + "\n" +
+        "원본 비고: " + originalNote + "\n" +
+        "주의: 이 파일은 Pr를 두 배로 변환한 값을 포함할 수 있습니다. " +
+        "원문 측정 정의를 확인하기 전에는 학습에 사용하지 마세요.\n" +
+        "원본 전체 열: " + JSON.stringify(original)
+    });
+  }
+
+  if (!records.length) {
+    throw new Error(
+      "열 제목은 찾았지만 실험 데이터 행을 찾지 못했습니다."
+    );
+  }
+
+  return records;
+}  const file = byId("dataFile").files[0];
 
       if (!file) {
         byId("importStatus").textContent = "먼저 파일을 선택하세요.";
