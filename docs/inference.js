@@ -1,5 +1,6 @@
 // The public page requests actual inference; it contains no prediction table.
 const byId = id => document.getElementById(id);
+let experimentalMode=false;
 let apiBase = null, models = [], selected = null, prediction = null, generation = 0, pending = null;
 const finite = value => typeof value === 'number' && Number.isFinite(value);
 const number = id => byId(id).value === '' ? null : Number(byId(id).value);
@@ -15,6 +16,7 @@ function clearResult(message) {
 }
 
 function updateModel() {
+  if(experimentalMode)return;
   clearResult();
   const structure = byId('deviceStructure').value, target = byId('predictionTarget').value, method = byId('methodInput').value;
   selected = models.find(m => m.structure === structure && m.target === target && m.measurement_method === method && m.active === true) || null;
@@ -51,6 +53,7 @@ function updateModel() {
 }
 
 function updateStructure() {
+  if(experimentalMode)return;
   const prior=byId('predictionTarget').value, mfis=byId('deviceStructure').value==='MFIS';
   const choices=mfis ? ['Memory Window','Threshold shift','Endurance'] : ['2Pr','Endurance'];
   byId('predictionTarget').replaceChildren(...choices.map(t=>new Option(t,t)));
@@ -64,6 +67,7 @@ async function connect() {
     const configResponse=await fetch('inference-config.json',{cache:'no-store',signal:controller.signal});
     if (!configResponse.ok) throw new Error('서버 연결 설정을 읽지 못했습니다.');
     const config=await configResponse.json();
+    if(config.mode==='experimental_browser'||config.mode==='experimental_api'){experimentalMode=true;const {startExperimental}=await import('./experimental.js');await startExperimental(config);return;}
     if (!config.api_base_url) {
       byId('engineStatus').textContent='추론 서버 미배포 · 원문 검증 및 호스팅 계정 연결 대기';
       updateModel();return;
@@ -93,6 +97,7 @@ function inputs() {
 }
 
 async function runPrediction() {
+  if(experimentalMode)return;
   clearResult();
   if (!selected || !apiBase) return;
   if (!byId('processForm').reportValidity()) return;
@@ -124,6 +129,7 @@ async function runPrediction() {
 
 byId('predictButton').addEventListener('click',runPrediction);
 for (const event of ['input','change']) byId('processForm').addEventListener(event,()=>{
+  if(experimentalMode)return;
   clearResult('입력이 변경되었습니다. 다시 예측을 실행하세요.');
   byId('predictButton').disabled=!selected;
 });
@@ -131,6 +137,7 @@ byId('deviceStructure').addEventListener('change',updateStructure);
 byId('predictionTarget').addEventListener('change',updateModel);
 byId('methodInput').addEventListener('change',updateModel);
 byId('downloadPrediction').addEventListener('click',()=>{
+  if(experimentalMode)return;
   if (!prediction) return;
   const result={kind:prediction.kind,structure:prediction.structure,target:prediction.target,value:prediction.value,unit:prediction.unit,model_version:prediction.model_version,dataset_hash:prediction.dataset_hash,...prediction.inputs};
   const quote=v=>'"'+String(v??'').replaceAll('"','""')+'"';

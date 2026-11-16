@@ -84,6 +84,12 @@ def audit(root):
             'mfis':{'source_rows':len(mfis),'two_pr_candidates':int((mfis.metric.eq('2Pr') & mfis.two_pr.notna()).sum()),'memory_window_labels':int(mfis.memory_window_v.notna().sum()),'threshold_shift_labels':int(mfis.threshold_shift_v.notna().sum()),'endurance_candidates':int(mfis.endurance_cycles.notna().sum())},
             'workbooks':inventory,'pdf_request_groups':len(queue),
             'interpretation':'Counts describe supplied metadata, not verified measurements or independent devices. No missing value was invented and no row was approved.'}
+    experiment=out/'experimental-report.json'
+    if experiment.exists():
+        e=json.loads(experiment.read_text())
+        report['scope']='source-reviewed-model requirements; experimental results are separate below'
+        report['status']='원문 승인 모델 학습 불가 / 사용자 승인 실험용 학습·계산 가능'
+        report['experimental_model']={k:e[k] for k in ['version','rows','dois','source_review_verified','validation_passed','forest','baseline','available_for_experiments']}
     (out/'training_audit.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
     lines=['# 실제 예측 활성화 점검 결과','', '**현재 상태: 데이터 검증 부족으로 학습 불가 / 추가 원문 자료 또는 사용자 설정 필요. 실제 모델 추론 미완료.**','',
            f'원본 Excel의 {sum(len(w["sheets"]) for w in inventory)}개 시트와 통합 {len(df)}행을 다시 검사했습니다. MFM 2Pr 후보 {len(m)}행, DOI가 있는 후보 {int(m.doi.notna().sum())}행 / {int(m.doi.nunique())} DOI입니다. 후보 수는 원문 승인 수나 독립 소자 수가 아닙니다.','',
@@ -106,7 +112,10 @@ def audit(root):
               '[MFIS 원문·실측값 요청 목록](docs/mfis_measurement_requests.csv)도 별도로 작성했습니다. 첨부 원본의 모든 열·비고를 확인했으며, 논문 제목의 memory 및 Pr/파괴 임계값을 Vth 측정값으로 오인하지 않았습니다. 이는 첨부 자료의 레이블 부재를 뜻하며, 접근하지 못한 논문 전체에 해당 측정값이 없다는 주장과는 다릅니다.', '',
               '필수 레이블은 실제 수치·단위·측정 정의·기준 상태·소자 식별자·원문 출처입니다. 아래 입력 메타데이터 목록은 수집 권장사항이며 전 항목을 일괄 필수 학습 조건으로 지정한 것은 아닙니다. 사용할 입력 변수는 실측 자료의 분포를 확인한 뒤 결정해야 합니다. 수집할 메타데이터: sample/device ID, DOI/원문 위치, 게이트 재료/두께, HZO 조성/두께, IL 재료/두께/위치, 반도체/도핑, 열처리, program/erase 각각의 전압·펄스폭, read 지연/바이어스, 온도, 반복 횟수와 상태. Memory Window는 측정 정의별로 구분해야 합니다. FeFET의 Vth_program−Vth_erase (V)는 두 Vth와 전류/드레인 바이어스·추출 기준을, MFIS capacitor의 Vfb 차이 또는 C-V 히스테리시스 폭은 두 전압과 flat-band/C 기준·주파수·스윕 방향을 함께 보고해야 합니다. 이 정의들을 하나의 MW 레이블로 합치지 않습니다. Threshold shift는 실제 FET의 Vth(N)−Vth(reference) (V)와 기준 상태를 명시해야 하며, capacitor의 ΔVfb를 ΔVth로 바꾸지 않습니다. Endurance는 고장 기준과 시험 종료/검열 구분 및 Ncycles에서의 실제 MW/ΔVth를 별도로 제공해야 합니다. 단위·측정 정의가 없는 숫자를 임의로 결합하지 않습니다.', '',
               '## 학습·배포·실제 작동 여부','',
-              '기존 Python API·모델 버전·범위 검사·사이트 연결 코드는 유지했습니다. 실제 승인 모델이 없으므로 공개 Python 추론 서버를 활성화하거나 Pages 버튼을 임의로 켜지 않았습니다. 공개 연구 모델로 두 입력을 계산하는 검증은 미실행입니다. 합성 fixture의 소프트웨어 테스트는 이 완료 기준을 충족하지 않습니다. 배포 계정 연결과 실제 검증 모델 내보내기 후에만 [배포 절차](DEPLOYMENT.md)를 진행할 수 있습니다. 새 디자인이나 기능 추가를 완료로 대체하지 않습니다.','']
+              '기존 Python API·모델 버전·범위 검사·사이트 연결 코드는 유지했습니다. 실제 승인 모델이 없으므로 공개 Python 추론 서버를 활성화하거나 Pages 버튼을 임의로 켜지 않았습니다. 원문 승인 모델로 두 입력을 계산하는 검증은 미실행입니다. 사용자 승인 실험 모델의 실제 계산 결과는 아래 후속 결과에 별도로 기록합니다. 합성 fixture의 소프트웨어 테스트는 이 완료 기준을 충족하지 않습니다. 배포 계정 연결과 실제 검증 모델 내보내기 후에만 [배포 절차](DEPLOYMENT.md)를 진행할 수 있습니다. 새 디자인이나 기능 추가를 완료로 대체하지 않습니다.','']
+    if experiment.exists():
+        lines[2]='**원문 승인 모델: 승인 0행으로 미완료. 사용자 승인 제공자료 실험용 모델은 실제 학습·계산 가능하며, 아래 후속 결과를 참조하세요.**'
+        lines += ['## 사용자 승인 후 실제 실험 학습 결과','',f'원문 승인 상태를 바꾸지 않고 {e["rows"]}행 / {e["dois"]} DOI로 Random Forest를 실제 학습했습니다. DOI GroupKFold의 MAE {e["forest"]["MAE"]:.3f}, RMSE {e["forest"]["RMSE"]:.3f} μC/cm², R² {e["forest"]["R2"]:.3f}; 평균값 기준 MAE {e["baseline"]["MAE"]:.3f}. CV 기준 통과 여부는 {e["validation_passed"]}입니다. 실패를 숨기거나 검증 모델로 표시하지 않습니다. 실험용 확인 후에만 동일 학습 트리로 계산합니다.','', '[실험용 실행 및 Python 학습 서버](EXPERIMENTAL_RUN.md)','']
     (root/'TRAINING_AUDIT.md').write_text('\n'.join(lines))
     return report
 

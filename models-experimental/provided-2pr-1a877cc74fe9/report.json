@@ -1,0 +1,203 @@
+{
+  "version": "provided-2pr-1a877cc74fe9",
+  "validation_level": "provided_data_experimental",
+  "source_review_verified": false,
+  "source_approved_rows": 0,
+  "available_for_experiments": true,
+  "active": false,
+  "validation_passed": false,
+  "requires_acknowledgement": true,
+  "structure": "MFM",
+  "target": "2Pr",
+  "measurement_method": "unconfirmed",
+  "measurement_definition": "자료 표기 2Pr; 원문 독립 검증 전·측정 정의 미확인",
+  "unit": "μC/cm²",
+  "rows": 26,
+  "dois": 11,
+  "candidate_rows": 161,
+  "excluded_rows": 135,
+  "dataset_hash": "1a877cc74fe903407af5a4cef85b69b1a169ffc4f8830e17ca760036e86b3c84",
+  "source_release_sha256": "d511f8baa99a27b4e16276f1bade9ccc699e02f6ed8b90c429e9c3c84f02c6a6",
+  "forest": {
+    "MAE": 17.705938106939364,
+    "RMSE": 23.01409097232191,
+    "R2": -0.4537723742663211
+  },
+  "baseline": {
+    "MAE": 12.30560805860806,
+    "RMSE": 19.50339993913731,
+    "R2": -0.044069511661501304
+  },
+  "folds": [
+    {
+      "train_dois": [
+        "10.1002/admi.202400156",
+        "10.1002/aelm.202400395",
+        "10.1016/j.physb.2024.416024",
+        "10.1038/s41598-024-80523-x",
+        "10.3390/electronics13010024",
+        "10.3390/ma18153547",
+        "10.3390/nano12030548",
+        "10.3390/nano12173001",
+        "10.3390/nano12173059"
+      ],
+      "test_dois": [
+        "10.1021/acsaelm.3c01502",
+        "10.3390/nano13101608"
+      ],
+      "rows": 6,
+      "forest": {
+        "MAE": 8.325189285714284,
+        "RMSE": 8.997900078858637,
+        "R2": -0.08554295402854195
+      },
+      "baseline": {
+        "MAE": 9.663666666666666,
+        "RMSE": 10.25185256429295,
+        "R2": -0.40918945384661143
+      }
+    },
+    {
+      "train_dois": [
+        "10.1002/admi.202400156",
+        "10.1016/j.physb.2024.416024",
+        "10.1021/acsaelm.3c01502",
+        "10.1038/s41598-024-80523-x",
+        "10.3390/ma18153547",
+        "10.3390/nano12030548",
+        "10.3390/nano12173001",
+        "10.3390/nano12173059",
+        "10.3390/nano13101608"
+      ],
+      "test_dois": [
+        "10.1002/aelm.202400395",
+        "10.3390/electronics13010024"
+      ],
+      "rows": 5,
+      "forest": {
+        "MAE": 32.30804492063494,
+        "RMSE": 34.14130488830414,
+        "R2": -8.402492291825107
+      },
+      "baseline": {
+        "MAE": 7.963619047619055,
+        "RMSE": 13.68902525147795,
+        "R2": -0.5115683972494625
+      }
+    },
+    {
+      "train_dois": [
+        "10.1002/admi.202400156",
+        "10.1002/aelm.202400395",
+        "10.1016/j.physb.2024.416024",
+        "10.1021/acsaelm.3c01502",
+        "10.3390/electronics13010024",
+        "10.3390/ma18153547",
+        "10.3390/nano12173001",
+        "10.3390/nano12173059",
+        "10.3390/nano13101608"
+      ],
+      "test_dois": [
+        "10.1038/s41598-024-80523-x",
+        "10.3390/nano12030548"
+      ],
+      "rows": 5,
+      "forest": {
+        "MAE": 22.241023373015878,
+        "RMSE": 30.948596561833604,
+        "R2": 0.22676886922230388
+      },
+      "baseline": {
+        "MAE": 25.165904761904763,
+        "RMSE": 36.034409418381195,
+        "R2": -0.048243621901086886
+      }
+    },
+    {
+      "train_dois": [
+        "10.1002/aelm.202400395",
+        "10.1016/j.physb.2024.416024",
+        "10.1021/acsaelm.3c01502",
+        "10.1038/s41598-024-80523-x",
+        "10.3390/electronics13010024",
+        "10.3390/nano12030548",
+        "10.3390/nano12173001",
+        "10.3390/nano12173059",
+        "10.3390/nano13101608"
+      ],
+      "test_dois": [
+        "10.1002/admi.202400156",
+        "10.3390/ma18153547"
+      ],
+      "rows": 5,
+      "forest": {
+        "MAE": 10.88005415873019,
+        "RMSE": 12.515602748210645,
+        "R2": -13.155609469980648
+      },
+      "baseline": {
+        "MAE": 3.023428571428571,
+        "RMSE": 3.8074814763493934,
+        "R2": -0.31008848980116355
+      }
+    },
+    {
+      "train_dois": [
+        "10.1002/admi.202400156",
+        "10.1002/aelm.202400395",
+        "10.1021/acsaelm.3c01502",
+        "10.1038/s41598-024-80523-x",
+        "10.3390/electronics13010024",
+        "10.3390/ma18153547",
+        "10.3390/nano12030548",
+        "10.3390/nano13101608"
+      ],
+      "test_dois": [
+        "10.1016/j.physb.2024.416024",
+        "10.3390/nano12173001",
+        "10.3390/nano12173059"
+      ],
+      "rows": 5,
+      "forest": {
+        "MAE": 16.651528560846547,
+        "RMSE": 19.414744533440555,
+        "R2": -0.34158707751551765
+      },
+      "baseline": {
+        "MAE": 16.239809523809523,
+        "RMSE": 18.748439959288067,
+        "R2": -0.25108200778413137
+      }
+    }
+  ],
+  "parameters": {
+    "n_estimators": 300,
+    "min_samples_leaf": 2,
+    "random_state": 42,
+    "validation": "GroupKFold(5), DOI"
+  },
+  "used_features": [
+    "hzo_nm",
+    "anneal_c",
+    "voltage_v",
+    "anneal_s",
+    "top",
+    "bottom",
+    "anneal_type",
+    "measurement_state"
+  ],
+  "required_fields": [
+    "hzo_nm",
+    "anneal_c",
+    "top",
+    "bottom"
+  ],
+  "optional_fields": [
+    "voltage_v",
+    "anneal_s",
+    "anneal_type",
+    "measurement_state"
+  ],
+  "limitations": "제공 자료 기반 실험용 모델입니다. 원문 독립 검증 전이며 교차검증 성능이 미달할 수 있습니다. 공정 결정·검증된 물성값으로 사용하지 마세요.",
+  "scope": "첨부 자료의 MFM·Hf:Zr=1:1·단일 전극·측정법 미기재 자료군. P-E/PUND 언급 논문과 Pr/하한/충돌 자료는 혼합하지 않음."
+}

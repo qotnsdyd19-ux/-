@@ -1,5 +1,5 @@
 {
-  "status": "데이터 검증 부족으로 학습 불가",
+  "status": "원문 승인 모델 학습 불가 / 사용자 승인 실험용 학습·계산 가능",
   "total_source_records": 301,
   "mfm_2pr_candidate_rows": 161,
   "mfm_candidate_known_dois": 30,
@@ -198,5 +198,24 @@
     }
   ],
   "pdf_request_groups": 49,
-  "interpretation": "Counts describe supplied metadata, not verified measurements or independent devices. No missing value was invented and no row was approved."
+  "interpretation": "Counts describe supplied metadata, not verified measurements or independent devices. No missing value was invented and no row was approved.",
+  "scope": "source-reviewed-model requirements; experimental results are separate below",
+  "experimental_model": {
+    "version": "provided-2pr-1a877cc74fe9",
+    "rows": 26,
+    "dois": 11,
+    "source_review_verified": false,
+    "validation_passed": false,
+    "forest": {
+      "MAE": 17.705938106939364,
+      "RMSE": 23.01409097232191,
+      "R2": -0.4537723742663211
+    },
+    "baseline": {
+      "MAE": 12.30560805860806,
+      "RMSE": 19.50339993913731,
+      "R2": -0.044069511661501304
+    },
+    "available_for_experiments": true
+  }
 }

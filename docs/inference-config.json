@@ -1,3 +1,7 @@
 {
-  "api_base_url": null
+  "mode": "experimental_browser",
+  "api_base_url": null,
+  "model_url": "experimental-model.json",
+  "model_version": "provided-2pr-1a877cc74fe9",
+  "model_sha256": "383b5818e7c9ff92129f22e03c579e241e01f461f9b800357e05e10c6b7c729b"
 }

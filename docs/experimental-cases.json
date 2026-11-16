@@ -1,0 +1,28 @@
+[
+  {
+    "inputs": {
+      "hzo_nm": 10.0,
+      "anneal_c": 500.0,
+      "voltage_v": 3.0,
+      "anneal_s": 30.0,
+      "top": "TiN",
+      "bottom": "TiN",
+      "anneal_type": "RTA",
+      "measurement_state": "after wakeup"
+    },
+    "record_id": "1741fdfa2158a2755b22"
+  },
+  {
+    "inputs": {
+      "hzo_nm": 10.0,
+      "anneal_c": 700.0,
+      "voltage_v": null,
+      "anneal_s": 30.0,
+      "top": "W",
+      "bottom": "W",
+      "anneal_type": "RTA",
+      "measurement_state": null
+    },
+    "record_id": "052513d5da0f65200227"
+  }
+]

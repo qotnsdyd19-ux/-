@@ -16,7 +16,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
@@ -26,3 +26,16 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: pip install -r requirements-dev.txt
+      - run: python -m playwright install --with-deps chromium
+      - name: Verify actual experimental predictions on the public website
+        run: python tests/browser_supplied_experiment.py --url https://qotnsdyd19-ux.github.io/-/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: public-experimental-prediction
+          path: /tmp/hzo-real-experimental-prediction.png

@@ -11,7 +11,7 @@ def write_report(df,out):
     review.to_csv(out/'review_queue.csv',index=False)
     good=eligible(df)
     can_train=any(readiness(df,method) for method in ['P-E','PUND'])
-    training={'status':'ready_for_training' if can_train else 'blocked_before_fit',
+    training={'scope':'source_review_verified_models_only','status':'ready_for_training' if can_train else 'blocked_before_fit',
               'reason':f'동일 측정 방법으로 승인된 {MIN_ROWS}개 관측치 및 {MIN_DOIS}개 DOI가 필요합니다.',
               'cross_validation':'not_run_by_public_export'}
     training['requirements_by_method']=[{'method':method,'approved_rows':int(good.measurement_method.eq(method).sum()),
@@ -35,5 +35,10 @@ def write_report(df,out):
                 exclusion_counts=dict(Counter(reason for _,r in df.iterrows() for reason in reasons(r))),
                 deployment={'static':'GitHub Pages','backend':'not_deployed','prediction_available':False},
                 note='실험값 후보는 독립 관측치·원문 검증값과 다릅니다. 합성 곡선·자동 Pr 배증·자동 승인은 없습니다.')
+    experiment=out/'experimental-report.json'
+    if experiment.exists():
+        e=json.loads(experiment.read_text())
+        report['experimental_model']={k:e[k] for k in ['version','rows','dois','source_review_verified','source_approved_rows','available_for_experiments','active','validation_passed','forest','baseline','used_features','limitations']}
+        report['experimental_model']['inference_mode']='Python-trained RandomForest, browser or dedicated experimental Python API'
     (out/'model_status.json').write_text(json.dumps(report,ensure_ascii=False,indent=2))
     return report

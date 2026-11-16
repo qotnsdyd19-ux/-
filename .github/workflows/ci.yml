@@ -16,6 +16,7 @@ jobs:
       - run: python -m pytest -q
       - run: python scripts/build_site.py
       - run: python scripts/audit_training_data.py
+      - run: python scripts/export_experimental.py
       - run: git diff --exit-code -- data docs TRAINING_AUDIT.md
       - run: python -m playwright install --with-deps chromium
       - name: Functional browser checks
@@ -30,6 +31,17 @@ jobs:
           curl --retry 20 --retry-connrefused --retry-delay 1 --fail http://127.0.0.1:8501/_stcore/health
           python scripts/browser_smoke.py
           python tests/browser_inference.py
+          python tests/browser_supplied_experiment.py
+      - name: Experimental model container
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker build -f Dockerfile.experimental -t hzo-experiment-ci .
+          export HZO_TRAIN_TOKEN=$(python -c 'import secrets; print(secrets.token_urlsafe(32))')
+          hzo_container=$(docker run --detach --rm --env HZO_TRAIN_TOKEN --publish 127.0.0.1:9081:8080 hzo-experiment-ci)
+          trap 'docker logs "$hzo_container" || true; docker stop "$hzo_container" || true' EXIT
+          curl --retry 20 --retry-all-errors --retry-delay 1 --retry-max-time 60 --max-time 5 --fail http://127.0.0.1:9081/healthz
+          python tests/http_experimental_smoke.py --url http://127.0.0.1:9081 --retrain
       - name: Container startup and unavailable-model checks
         shell: bash
         run: |
