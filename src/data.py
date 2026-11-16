@@ -10,7 +10,10 @@ import pandas as pd
 from openpyxl import load_workbook
 
 NUMERIC = ['two_pr','hzo_nm','top_nm','bottom_nm','top_interlayer_nm','bottom_interlayer_nm','anneal_c','anneal_s','voltage_v','field_mv_cm','wake_cycles','ald_c','pulse_s','frequency_hz']
+NUMERIC += ['pr','two_pr_lower_bound','endurance_cycles','cycling_voltage_v','cycling_field_mv_cm','cycling_frequency_hz','cycling_pulse_s','cycling_temperature_c','measurement_temperature_k','end_two_pr','retention_pct','il_nm','hf_fraction','memory_window_v','threshold_shift_v']
 SCHEMA = ['record_id','source_file','source_sheet','source_row','sample_id','paper','doi','source_url','source_locator','metric','structure','composition','crystallinity','top','bottom','anneal_type','atmosphere','measurement_method','measurement_state','deposition','verification','recommendation','notes','raw_json'] + NUMERIC
+SCHEMA += ['sample_group','sheet_membership','il_material','il_position','voltage_definition','cycling_voltage_definition','cycle_definition','endurance_relation','endurance_definition','numeric_confidence','evidence_level','measurement_definition','original_structure','review_status']
+SCHEMA += ['possible_overlap']
 MAP = {'2Pr (μC/cm²)':'two_pr','HZO (nm)':'hzo_nm','Top 전극':'top','Top 두께 (nm)':'top_nm','Bottom 전극':'bottom','Bottom 두께 (nm)':'bottom_nm','Top W 삽입층 (nm)':'top_interlayer_nm','Bottom W 삽입층 (nm)':'bottom_interlayer_nm','열처리 온도 (°C)':'anneal_c','열처리 시간 (s)':'anneal_s','열처리 방식':'anneal_type','분위기':'atmosphere','Wake-up 횟수':'wake_cycles','측정 |V| (V)':'voltage_v','증착법':'deposition','ALD 온도 (°C)':'ald_c','Sample ID':'sample_id','출처 DOI':'doi','출처 URL':'source_url','Fig / Table':'source_locator','원문 수치 검증':'verification','기존 데이터 상태':'recommendation','비고 / 확인사항':'notes'}
 MAP2 = {'논문ID':'sample_id','논문':'paper','소자구조':'structure','결정성':'crystallinity','HZO 조성':'composition','HZO 두께 nm':'hzo_nm','하부전극':'bottom','하부전극 두께 nm':'bottom_nm','상부전극':'top','상부전극 두께 nm':'top_nm','RTA 온도 °C':'anneal_c','RTA 시간 s':'anneal_s','RTA 분위기':'atmosphere','인가전압 V':'voltage_v','인가전계 MV/cm':'field_mv_cm','펄스폭 s':'pulse_s','주파수 Hz':'frequency_hz','측정상태':'measurement_state','2Pr µC/cm²':'two_pr','학습사용':'recommendation','비고':'notes','원문':'source_url'}
 
@@ -41,6 +44,9 @@ def ingest(source, name=None):
     name = name or Path(source).name
     if name.lower().endswith('.csv'):
         df = pd.read_csv(source)
+        if {'id','twoPr','end_type','structure'}.issubset(df.columns):
+            from src.ingest_v2 import ingest_csv
+            return ingest_csv(df,name)
         needed = {'sample_id','metric','two_pr','doi','source_locator'}
         if not needed.issubset(df.columns): raise ValueError('CSV 필수 열: '+', '.join(sorted(needed)))
         rows=[]
@@ -48,11 +54,15 @@ def ingest(source, name=None):
             r={k:clean(v) for k,v in r.items() if k in SCHEMA}
             r['raw_json']=json.dumps(r,ensure_ascii=False,default=str)
             r.update(source_file=name,source_sheet='CSV',source_row=i)
+            r['review_status']='pending'
             r['record_id']=hashlib.sha256(r['raw_json'].encode()).hexdigest()[:20]
             r['doi']=normalize_doi(r.get('doi'))
             rows.append(r)
         return frame(rows),{'duplicate_subset_rows':0,'non_2pr_rows':0},[]
     wb = load_workbook(source,data_only=True)
+    if '01_ALL_MERGED' in wb.sheetnames:
+        from src.ingest_v2 import ingest_workbook
+        return ingest_workbook(wb,name)
     rows=[]; papers=[]; stats={'duplicate_subset_rows':0,'non_2pr_rows':0}
     if '01_2Pr_40행' in wb.sheetnames:
         s=wb['01_2Pr_40행']; headers=[c.value for c in s[1]]
@@ -112,15 +122,28 @@ def ingest(source, name=None):
 
 def load_sources(folder):
     datasets=[]; stats={'duplicate_subset_rows':0,'non_2pr_rows':0}; papers=[]
-    for path in sorted(Path(folder).glob('*.xlsx')):
+    for path in sorted(p for p in Path(folder).iterdir() if p.suffix.lower() in {'.xlsx','.csv'}):
         df,counts,p=ingest(path); datasets.append(df); papers.extend(p)
-        for k,v in counts.items(): stats[k]+=v
-    return pd.concat(datasets,ignore_index=True) if datasets else frame([]),stats,papers
+        for k,v in counts.items():
+            if isinstance(v,list): stats.setdefault(k,[]).extend(v)
+            else: stats[k]=stats.get(k,0)+v
+    combined=pd.concat(datasets,ignore_index=True) if datasets else frame([])
+    # Cross-source overlap is a review flag, not proof of identical devices.
+    combined['possible_overlap']=cross_source_overlap(combined)
+    return combined,stats,papers
+
+def cross_source_overlap(df):
+    cols=['doi','metric','two_pr','hzo_nm','anneal_c']
+    result=pd.Series(False,index=df.index)
+    part=df.loc[df[cols].notna().all(axis=1)]
+    if len(part):
+        result.loc[part.index]=part.groupby(cols,dropna=False).source_file.transform('nunique').gt(1)
+    return result
 
 def duplicate_candidates(df):
-    cols=['doi','two_pr','hzo_nm','top','bottom','anneal_c','voltage_v']
+    cols=['doi','structure','metric','two_pr','hzo_nm','top','bottom','anneal_c','voltage_v','measurement_method','measurement_state','wake_cycles','pulse_s','frequency_hz','sample_group']
     # Flag possible cross-source duplicates, never silently collapse independent measurements.
-    return df['doi'].notna() & df['two_pr'].notna() & df.duplicated(cols,keep=False)
+    return df['doi'].notna() & df['two_pr'].notna() & df.reindex(columns=cols).duplicated(cols,keep=False)
 
 def export(folder='data/raw',output='data'):
     df,stats,papers=load_sources(folder)
@@ -128,6 +151,9 @@ def export(folder='data/raw',output='data'):
     df.to_csv(out/'normalized.csv',index=False)
     (out/'papers.json').write_text(json.dumps(papers,ensure_ascii=False,indent=2,default=str))
     stats.update(total_records=len(df),two_pr_candidates=int((df.metric.eq('2Pr')&df.two_pr.notna()).sum()),approved_records=0,possible_duplicate_rows=int(duplicate_candidates(df).sum()),missing={k:int(df[k].isna().sum()) for k in NUMERIC},note='원문 미검증. 모든 기록은 조회 전용으로 시작합니다.')
+    stats['by_structure']=df.structure.fillna('미확인').value_counts().to_dict()
+    stats['by_source']=df.source_file.value_counts().to_dict()
+    stats['possible_cross_source_overlap_rows']=int(df.possible_overlap.sum())
     (out/'quality.json').write_text(json.dumps(stats,ensure_ascii=False,indent=2))
     return df,stats,papers
 

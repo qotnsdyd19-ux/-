@@ -29,12 +29,15 @@ def fingerprint(df):
 def reasons(row):
     issues=[]
     if row.get('review_status')!='approved': issues.append('원문 승인 대기')
+    if row.get('possible_overlap') is True or isinstance(row.get('possible_overlap'),np.bool_) and row.get('possible_overlap'): issues.append('출처 간 중복 후보 · 독립 관측 확인 필요')
     if row.get('metric')!='2Pr' or pd.isna(row.get('two_pr')): issues.append('2Pr 레이블 없음 / Pr 분리')
     elif row['two_pr']<=0: issues.append('2Pr 양수 필요')
+    if pd.notna(row.get('pr')) or pd.notna(row.get('two_pr_lower_bound')) or 'CONFLICT' in str(row.get('measurement_state') or ''): issues.append('Pr·하한·충돌은 2Pr 점값 학습에서 제외')
     if row.get('anneal_type')!='RTA': issues.append('RTA 미확인 / 비RTA')
     if row.get('structure')!='MFM': issues.append('기본 MFM 미확인')
     if row.get('composition')!='Hf:Zr=1:1': issues.append('Hf:Zr 1:1 미확인')
     if row.get('scope_verified') is not True: issues.append('단층·다결정·삽입층 없음 미확인')
+    if pd.notna(row.get('il_material')) or (pd.notna(row.get('il_nm')) and row.get('il_nm')>0): issues.append('IL 포함 · 기본 MFM 모델 제외')
     for col in ['top_interlayer_nm','bottom_interlayer_nm']:
         if pd.notna(row.get(col)) and row[col]>0: issues.append('삽입층 / 다층 전극 제외')
     for col in NUM+['two_pr']:

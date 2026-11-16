@@ -9,6 +9,9 @@ def test_app_runs_without_model_and_never_displays_prediction():
     prediction=[b for b in app.button if b.label=='2Pr 예측 실행 →']
     assert prediction and prediction[0].disabled
     assert any('활성 모델' in i.value or '학습된 모델 없음' in i.value for i in app.info)
-    assert any(m.value=='78' for m in app.metric)
+    assert any(m.value=='204' for m in app.metric)
     app.text_input[0].set_value('no-such-sample').run(timeout=40)
     assert not app.exception
+    app.radio[0].set_value('MFIS').run(timeout=40)
+    assert not app.exception
+    assert any(b.disabled and 'MFIS 예측' in b.label for b in app.button)

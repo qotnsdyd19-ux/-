@@ -15,3 +15,15 @@ jobs:
       - run: python -m pytest -q
       - run: python scripts/build_site.py
       - run: git diff --exit-code -- data docs
+      - run: python -m playwright install --with-deps chromium
+      - name: Functional browser checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m http.server 8000 --bind 127.0.0.1 --directory docs > /tmp/hzo-static.log 2>&1 &
+          static_pid=$!
+          HZO_READ_ONLY=1 python -m streamlit run app.py --server.address 127.0.0.1 --server.port 8501 > /tmp/hzo-streamlit.log 2>&1 &
+          streamlit_pid=$!
+          trap 'kill "$static_pid" "$streamlit_pid"' EXIT
+          curl --retry 20 --retry-connrefused --retry-delay 1 --fail http://127.0.0.1:8501/_stcore/health
+          python scripts/browser_smoke.py

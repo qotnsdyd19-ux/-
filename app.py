@@ -28,7 +28,7 @@ df=apply_reviews(raw,store.reviews()); good=eligible(df)
 model=latest(df,ROOT/'artifacts/models')
 st.markdown('<div class="eyebrow">MATERIALS INTELLIGENCE / RESEARCH WORKSPACE</div>',unsafe_allow_html=True)
 st.title('HZO Ferroelectric AI Predictor')
-st.markdown('<p class="lead">MFM Structure · 2Pr Estimation<br>논문에서 공정으로, 검증된 데이터에서 예측으로. Hf₀.₅Zr₀.₅O₂ 강유전체 연구 워크스페이스.</p>',unsafe_allow_html=True)
+st.markdown('<p class="lead">Version 2 · MFM / MFIS · 측정 정의별 분리<br>논문에서 공정으로, 검증된 데이터에서 예측으로. Hf₀.₅Zr₀.₅O₂ 강유전체 연구 워크스페이스.</p>',unsafe_allow_html=True)
 a,b,c,d=st.columns(4)
 a.metric('2Pr 후보 관측치',int((df.metric.eq('2Pr')&df.two_pr.notna()).sum()))
 b.metric('출처 워크북',int(df.source_file.nunique()))
@@ -38,56 +38,75 @@ st.caption(f'확인 시트 중복 {counts["duplicate_subset_rows"]}행은 추가
 if not model: st.info(f'원문·Methods 검토 전에는 예측하지 않습니다. 최소 {MIN_ROWS}개 승인 관측치 / {MIN_DOIS}개 DOI 및 DOI 분리 교차검증을 통과해야 활성화됩니다. 이 기준은 신뢰성을 보장하는 기준이 아닌 초기 운영 제한입니다.')
 tabs=st.tabs(['◈  공정 시뮬레이터','▤  실험 데이터','◎  품질 리포트','↥  업로드 · 검토','⎇  모델 버전'])
 with tabs[0]:
-    left,right=st.columns([1.15,1],gap='large')
-    with left:
-        st.subheader('공정 조건')
-        st.caption('Phase 1 · 단층 다결정 MFM · RTA · Hf:Zr = 0.5:0.5 고정')
-        inputs={}
-        with st.form('predict'):
-            x,y=st.columns(2)
-            with x:
-                inputs['hzo_nm']=st.number_input('HZO 두께 (nm)',min_value=0.1,max_value=1000.,value=10.,step=0.1)
-                inputs['top']=st.selectbox('Top electrode',['TiN','W','Mo','Ru','Pt','Au','NbN'])
-                inputs['top_nm']=st.number_input('Top 두께 (nm)',min_value=0.1,max_value=2000.,value=50.,step=0.1)
-                inputs['anneal_c']=st.number_input('RTA 온도 (°C)',min_value=20.,max_value=1200.,value=500.,step=1.)
-                inputs['voltage_v']=st.number_input('측정 |전압| (V)',min_value=0.01,max_value=30.,value=3.,step=0.1)
-                inputs['measurement_method']=st.selectbox('측정 방법',['P-E','PUND'])
-            with y:
-                st.text_input('Hf:Zr 비율','0.5 : 0.5',disabled=True)
-                inputs['bottom']=st.selectbox('Bottom electrode',['TiN','W','Mo','Ru','Pt','Au','NbN'])
-                inputs['bottom_nm']=st.number_input('Bottom 두께 (nm)',min_value=0.1,max_value=2000.,value=50.,step=0.1)
-                inputs['anneal_s']=st.number_input('RTA 시간 (s)',min_value=0.1,max_value=36000.,value=30.,step=0.1)
-                inputs['atmosphere']=st.selectbox('RTA 분위기',['N2','Ar','O2','N2/H2','Vacuum'])
-                inputs['wake_cycles']=st.number_input('Wake-up / pre-cycling (cycles)',min_value=0,value=0,step=100)
-            inputs['measurement_state']=st.selectbox('측정 상태',['pristine','wake-up','cycled'])
-            with st.expander('고급 조건 · 삽입층 / 증착 / 측정'):
-                inputs['multilayer']=st.checkbox('삽입층 또는 다층 전극 있음 (예측 제외)')
-                st.number_input('Top 삽입층 (nm)',min_value=0.,value=0.,step=0.1,disabled=not inputs['multilayer'])
-                st.number_input('Bottom 삽입층 (nm)',min_value=0.,value=0.,step=0.1,disabled=not inputs['multilayer'])
-                inputs['ald_c']=st.number_input('ALD 온도 (°C) · 미기재 시 비워두기',min_value=0.,value=None)
-                inputs['deposition']=st.selectbox('증착 유형',['thermal_ALD','PEALD','CPALD','ALD','sputtering'])
-                inputs['pulse_s']=st.number_input('측정 펄스폭 (s) · 미기재 시 비워두기',min_value=0.,value=None,format='%.9f')
-                inputs['frequency_hz']=st.number_input('측정 주파수 (Hz) · 미기재 시 비워두기',min_value=0.,value=None)
-            submitted=st.form_submit_button('2Pr 예측 실행 →',type='primary',disabled=model is None,width='stretch')
-    with right:
-        st.subheader('예측 결과')
-        value,issues=predict(model,inputs,df) if submitted else (None,[])
-        if value is None:
-            st.markdown('<div class="result"><div class="eyebrow">AWAITING VALIDATED MODEL</div><div class="value">— <span style="font-size:20px">μC/cm²</span></div><div class="muted">원문 검증 이후에만 2Pr 결과를 제공합니다.<br>실험값 후보와 모델 예측값은 구분됩니다.</div></div>',unsafe_allow_html=True)
-        else:
-            st.metric('Random Forest · 2Pr (μC/cm²)',f'{value:.2f}')
-            st.caption('DOI 분리 검증을 통과한 연구용 추정입니다. 인과관계나 공정 보증을 의미하지 않습니다.')
-        for issue in issues: st.warning(issue)
-        st.markdown('#### 신뢰성 체크')
-        st.write(f'승인된 관측치 **{len(good)} / {MIN_ROWS}** · 독립 DOI **{good.doi.nunique()} / {MIN_DOIS}**')
-        st.progress(min(1.,len(good)/MIN_ROWS))
-        st.caption('불확실성: N/A — 소수 논문에 대한 보정된 예측구간이 없습니다. 임의의 95% 신뢰구간을 표시하지 않습니다.')
-        st.markdown('#### MFM stack')
-        st.code(f'{inputs["top"]}  /  Hf₀.₅Zr₀.₅O₂  /  {inputs["bottom"]}\nTop metal        Ferroelectric        Bottom metal',language=None)
-        st.caption('입력 기본값은 입력 예시이며 학습 데이터의 결측치를 채우지 않습니다.')
+    device=st.radio('예측 소자 구조',['MFM','MFIS'],horizontal=True)
+    if device=='MFIS':
+        st.subheader('MFIS · 독립 모델 검증 대기')
+        st.code('Metal gate / HZO / Insulator / Semiconductor',language=None)
+        a,b=st.columns(2)
+        with a:
+            st.text_input('금속 게이트 재료',placeholder='TiN, Mo…')
+            st.number_input('MFIS HZO 두께 (nm)',min_value=0.1,value=None)
+            st.text_input('절연층 재료',placeholder='SiO2, SiOx…')
+            st.number_input('절연층 두께 (nm)',min_value=0.,value=None)
+        with b:
+            st.text_input('반도체 재료',placeholder='p++ Si, n+-Si…')
+            st.number_input('MFIS 구동 전압 (V)',value=None)
+            st.number_input('MFIS 펄스폭 (s)',min_value=0.,value=None,format='%.9f')
+            st.number_input('MFIS 반복 횟수',min_value=0,value=None)
+        st.button('MFIS 예측 실행 · 검증 모델 없음',disabled=True)
+        st.info('Memory Window·문턱전압 수치 레이블 없음. MFIS의 2Pr는 MFM과 분리합니다. Endurance 검열·고장 정의 및 독립 원문 승인 부족으로 예측·곡선·추천을 제공하지 않습니다.')
+        st.write('모델 버전: 없음 · MAE / RMSE / R²: N/A')
+    else:
+        left,right=st.columns([1.15,1],gap='large')
+        with left:
+            st.subheader('공정 조건')
+            st.caption('Phase 1 · 단층 다결정 MFM · RTA · Hf:Zr = 0.5:0.5 고정')
+            inputs={}
+            with st.form('predict'):
+                x,y=st.columns(2)
+                with x:
+                    inputs['hzo_nm']=st.number_input('HZO 두께 (nm)',min_value=0.1,max_value=1000.,value=10.,step=0.1)
+                    inputs['top']=st.selectbox('Top electrode',['TiN','W','Mo','Ru','Pt','Au','NbN'])
+                    inputs['top_nm']=st.number_input('Top 두께 (nm)',min_value=0.1,max_value=2000.,value=50.,step=0.1)
+                    inputs['anneal_c']=st.number_input('RTA 온도 (°C)',min_value=20.,max_value=1200.,value=500.,step=1.)
+                    inputs['voltage_v']=st.number_input('측정 |전압| (V)',min_value=0.01,max_value=30.,value=3.,step=0.1)
+                    inputs['measurement_method']=st.selectbox('측정 방법',['P-E','PUND'])
+                with y:
+                    st.text_input('Hf:Zr 비율','0.5 : 0.5',disabled=True)
+                    inputs['bottom']=st.selectbox('Bottom electrode',['TiN','W','Mo','Ru','Pt','Au','NbN'])
+                    inputs['bottom_nm']=st.number_input('Bottom 두께 (nm)',min_value=0.1,max_value=2000.,value=50.,step=0.1)
+                    inputs['anneal_s']=st.number_input('RTA 시간 (s)',min_value=0.1,max_value=36000.,value=30.,step=0.1)
+                    inputs['atmosphere']=st.selectbox('RTA 분위기',['N2','Ar','O2','N2/H2','Vacuum'])
+                    inputs['wake_cycles']=st.number_input('Wake-up / pre-cycling (cycles)',min_value=0,value=0,step=100)
+                inputs['measurement_state']=st.selectbox('측정 상태',['pristine','wake-up','cycled'])
+                with st.expander('고급 조건 · 삽입층 / 증착 / 측정'):
+                    inputs['multilayer']=st.checkbox('삽입층 또는 다층 전극 있음 (예측 제외)')
+                    st.number_input('Top 삽입층 (nm)',min_value=0.,value=0.,step=0.1,disabled=not inputs['multilayer'])
+                    st.number_input('Bottom 삽입층 (nm)',min_value=0.,value=0.,step=0.1,disabled=not inputs['multilayer'])
+                    inputs['ald_c']=st.number_input('ALD 온도 (°C) · 미기재 시 비워두기',min_value=0.,value=None)
+                    inputs['deposition']=st.selectbox('증착 유형',['thermal_ALD','PEALD','CPALD','ALD','sputtering'])
+                    inputs['pulse_s']=st.number_input('측정 펄스폭 (s) · 미기재 시 비워두기',min_value=0.,value=None,format='%.9f')
+                    inputs['frequency_hz']=st.number_input('측정 주파수 (Hz) · 미기재 시 비워두기',min_value=0.,value=None)
+                submitted=st.form_submit_button('2Pr 예측 실행 →',type='primary',disabled=model is None,width='stretch')
+        with right:
+            st.subheader('예측 결과')
+            value,issues=predict(model,inputs,df) if submitted else (None,[])
+            if value is None:
+                st.markdown('<div class="result"><div class="eyebrow">AWAITING VALIDATED MODEL</div><div class="value">— <span style="font-size:20px">μC/cm²</span></div><div class="muted">원문 검증 이후에만 2Pr 결과를 제공합니다.<br>실험값 후보와 모델 예측값은 구분됩니다.</div></div>',unsafe_allow_html=True)
+            else:
+                st.metric('Random Forest · 2Pr (μC/cm²)',f'{value:.2f}')
+                st.caption('DOI 분리 검증을 통과한 연구용 추정입니다. 인과관계나 공정 보증을 의미하지 않습니다.')
+            for issue in issues: st.warning(issue)
+            st.markdown('#### 신뢰성 체크')
+            st.write(f'승인된 관측치 **{len(good)} / {MIN_ROWS}** · 독립 DOI **{good.doi.nunique()} / {MIN_DOIS}**')
+            st.progress(min(1.,len(good)/MIN_ROWS))
+            st.caption('불확실성: N/A — 소수 논문에 대한 보정된 예측구간이 없습니다. 임의의 95% 신뢰구간을 표시하지 않습니다.')
+            st.markdown('#### MFM stack')
+            st.code(f'{inputs["top"]}  /  Hf₀.₅Zr₀.₅O₂  /  {inputs["bottom"]}\nTop metal        Ferroelectric        Bottom metal',language=None)
+            st.caption('입력 기본값은 입력 예시이며 학습 데이터의 결측치를 채우지 않습니다.')
 
 def table(data):
-    cols=['sample_id','two_pr','hzo_nm','top','bottom','anneal_c','anneal_type','measurement_state','doi','source_url','verification','source_file','source_row','notes']
+    cols=['sample_id','structure','metric','pr','two_pr_lower_bound','endurance_cycles','endurance_relation','sample_group','source_locator','two_pr','hzo_nm','top','bottom','anneal_c','anneal_type','measurement_state','doi','source_url','verification','source_file','source_row','notes']
     st.dataframe(data[cols],hide_index=True,width='stretch',column_config={'source_url':st.column_config.LinkColumn('원문 링크'),'two_pr':st.column_config.NumberColumn('실험 2Pr (μC/cm²)',format='%.2f')})
 with tabs[1]:
     st.subheader('문헌 실험값 탐색')
@@ -96,18 +115,20 @@ with tabs[1]:
     query=a.text_input('검색 · 논문 / DOI / 전극 / 샘플',placeholder='TiN, 10.3390, P09…')
     source=b.selectbox('출처',['전체']+sorted(df.source_file.dropna().unique().tolist()))
     anneal=c.selectbox('열처리',['전체','RTA','미확인']+sorted(set(df.anneal_type.dropna())-{'RTA'}))
+    structure=st.selectbox('탐색 소자 구조',['전체']+sorted(df.structure.dropna().unique()))
     view=df.copy()
+    if structure!='전체': view=view[view.structure.eq(structure)]
     if query: view=view[view.fillna('').astype(str).apply(lambda r:r.str.contains(query,case=False,regex=False).any(),axis=1)]
     if source!='전체': view=view[view.source_file.eq(source)]
     if anneal!='전체': view=view[view.anneal_type.isna() if anneal=='미확인' else view.anneal_type.eq(anneal)]
     xaxis=st.radio('비교 축',['hzo_nm','anneal_c'],format_func=lambda s:{'hzo_nm':'HZO 두께 (nm)','anneal_c':'열처리 온도 (°C)'}[s],horizontal=True)
     plot=view[view.metric.eq('2Pr')&view.two_pr.notna()&view[xaxis].notna()].copy()
     plot['treatment']=plot.anneal_type.fillna('미확인')
-    if len(plot):
+    if len(plot) and structure!='전체':
         fig=px.scatter(plot,x=xaxis,y='two_pr',color='treatment',symbol='source_file',hover_data=['sample_id','doi','top','bottom','verification'],labels={xaxis:'HZO 두께 (nm)' if xaxis=='hzo_nm' else '열처리 온도 (°C)','two_pr':'보고된 2Pr (μC/cm²)','treatment':'열처리'},color_discrete_sequence=['#74e6c4','#7eaeff','#e7ba70','#d89ce5','#ef8c8c'])
         fig.update_layout(template='plotly_dark',paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='#101a28',height=410,legend=dict(orientation='h',y=-.25))
         st.plotly_chart(fig,width='stretch')
-    else: st.info('선택한 조건에 숫자값과 비교 축이 모두 있는 기록이 없습니다.')
+    else: st.info('소자 구조를 선택하면 해당 구조의 2Pr 후보 산점도를 표시합니다. Pr·하한·충돌은 점값과 합치지 않습니다.')
     st.caption(f'검색 결과 {len(view)}행 · 그래프 표시 {len(plot)}행 (결측 축 / 비2Pr 제외)')
     table(view)
     st.download_button('정규화 데이터 CSV 다운로드',df.to_csv(index=False).encode('utf-8-sig'),'hzo_normalized.csv','text/csv')
@@ -183,6 +204,6 @@ with tabs[4]:
         r=json.loads(p.read_text()); reports.append(dict(version=r['version'],dataset=r['dataset_hash'][:12],rows=r['rows'],dois=r['dois'],RF_MAE=r['forest']['MAE'],RF_RMSE=r['forest']['RMSE'],RF_R2=r['forest']['R2'],Dummy_MAE=r['baseline']['MAE'],Dummy_RMSE=r['baseline']['RMSE'],Dummy_R2=r['baseline']['R2'],passed=r['active']))
     if reports: st.dataframe(pd.DataFrame(reports),hide_index=True)
     else: st.info('학습된 모델 없음 · MAE / RMSE / R²: N/A. 승인되지 않은 후보로 모델을 만들지 않았습니다.')
-    st.caption('모델·데이터·리뷰 감사 기록은 artifacts/에 저장됩니다. 서버 재시작 시 보존되지만 임시 호스팅 디스크에서는 유실될 수 있습니다. 별도 영구 볼륨과 백업을 사용하세요. PDF 자동 추출과 Endurance/MFIS 예측은 Phase 1 범위 밖입니다.')
+    st.caption('모델·데이터·리뷰 감사 기록은 artifacts/에 저장됩니다. 서버 재시작 시 보존되지만 임시 호스팅 디스크에서는 유실될 수 있습니다. 별도 영구 볼륨과 백업을 사용하세요. MFIS·Endurance·열화 곡선은 미검증이며 별도 모델과 원문 승인 데이터가 필요합니다.')
 st.divider()
 st.caption('HZO / MATERIALS INTELLIGENCE   ·   Phase 1 연구용   ·   수치 확인 ≠ 학습 승인   ·   No synthetic predictions')

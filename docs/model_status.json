@@ -1,0 +1,157 @@
+{
+  "version": "2",
+  "sources": {
+    "HZO_MFM_MFIS_확장통합_2026-11-16.xlsx": 152,
+    "HZO_데이터2.xlsx": 63,
+    "HZO_MFM 20 논문의 데이터값..xlsx": 49,
+    "hzo_new_mfm.csv": 37
+  },
+  "structures": {
+    "MFM": 221,
+    "MFIS": 35,
+    "unknown": 9,
+    "MFM(저자 표기 MFIM)": 8,
+    "MFIM_REFERENCE": 5,
+    "MFIM_REVIEW": 5,
+    "MFM_PAPER_LABEL_SUBSTRATE_CONTACT": 4,
+    "MFS": 4,
+    "MFM_WITH_OXIDE_CAP": 4,
+    "MFIM": 3,
+    "MFIS_FTJ": 1,
+    "MIFS_FTJ_REFERENCE": 1,
+    "MFM_REFERENTIAL": 1
+  },
+  "possible_cross_source_overlap_rows": 4,
+  "approved_rows": 0,
+  "approved_dois": 0,
+  "training": {
+    "status": "blocked_before_fit",
+    "reason": "승인된 20개 관측치 및 5개 DOI가 필요합니다.",
+    "cross_validation": "not_run_on_unapproved_data"
+  },
+  "targets": [
+    {
+      "structure": "MFM",
+      "target": "2Pr",
+      "candidate_rows": 161,
+      "approved_rows": 0,
+      "active": false,
+      "MAE": null,
+      "RMSE": null,
+      "R2": null,
+      "reason": "원문 승인·측정 정의·독립 DOI 부족"
+    },
+    {
+      "structure": "MFM",
+      "target": "Memory Window",
+      "candidate_rows": 0,
+      "approved_rows": 0,
+      "active": false,
+      "MAE": null,
+      "RMSE": null,
+      "R2": null,
+      "reason": "확인된 수치 레이블 없음"
+    },
+    {
+      "structure": "MFM",
+      "target": "Threshold shift",
+      "candidate_rows": 0,
+      "approved_rows": 0,
+      "active": false,
+      "MAE": null,
+      "RMSE": null,
+      "R2": null,
+      "reason": "확인된 수치 레이블 없음"
+    },
+    {
+      "structure": "MFM",
+      "target": "Endurance",
+      "candidate_rows": 80,
+      "approved_rows": 0,
+      "active": false,
+      "MAE": null,
+      "RMSE": null,
+      "R2": null,
+      "reason": "고장 정의·검열을 처리하는 별도 모델 미검증"
+    },
+    {
+      "structure": "MFIS",
+      "target": "2Pr",
+      "candidate_rows": 20,
+      "approved_rows": 0,
+      "active": false,
+      "MAE": null,
+      "RMSE": null,
+      "R2": null,
+      "reason": "원문 승인·측정 정의·독립 DOI 부족"
+    },
+    {
+      "structure": "MFIS",
+      "target": "Memory Window",
+      "candidate_rows": 0,
+      "approved_rows": 0,
+      "active": false,
+      "MAE": null,
+      "RMSE": null,
+      "R2": null,
+      "reason": "확인된 수치 레이블 없음"
+    },
+    {
+      "structure": "MFIS",
+      "target": "Threshold shift",
+      "candidate_rows": 0,
+      "approved_rows": 0,
+      "active": false,
+      "MAE": null,
+      "RMSE": null,
+      "R2": null,
+      "reason": "확인된 수치 레이블 없음"
+    },
+    {
+      "structure": "MFIS",
+      "target": "Endurance",
+      "candidate_rows": 13,
+      "approved_rows": 0,
+      "active": false,
+      "MAE": null,
+      "RMSE": null,
+      "R2": null,
+      "reason": "고장 정의·검열을 처리하는 별도 모델 미검증"
+    }
+  ],
+  "exclusion_counts": {
+    "원문 승인 대기": 301,
+    "RTA 미확인 / 비RTA": 242,
+    "단층·다결정·삽입층 없음 미확인": 301,
+    "결측: hzo_nm": 51,
+    "결측: top_nm": 169,
+    "결측: bottom_nm": 182,
+    "결측: anneal_c": 90,
+    "결측: anneal_s": 135,
+    "결측: voltage_v": 191,
+    "결측: wake_cycles": 211,
+    "결측: atmosphere": 148,
+    "결측: measurement_method": 285,
+    "결측: measurement_state": 177,
+    "P-E/PUND 정의 미확인": 296,
+    "검토자·원문 근거 없음": 301,
+    "삽입층 / 다층 전극 제외": 10,
+    "2Pr 레이블 없음 / Pr 분리": 97,
+    "기본 MFM 미확인": 80,
+    "Hf:Zr 1:1 미확인": 56,
+    "결측: doi": 95,
+    "출처 간 중복 후보 · 독립 관측 확인 필요": 4,
+    "IL 포함 · 기본 MFM 모델 제외": 53,
+    "Pr·하한·충돌은 2Pr 점값 학습에서 제외": 26,
+    "결측: top": 18,
+    "결측: bottom": 18,
+    "결측: source_locator": 100,
+    "2Pr 양수 필요": 2
+  },
+  "deployment": {
+    "static": "GitHub Pages",
+    "backend": "not_deployed",
+    "prediction_available": false
+  },
+  "note": "실험값 후보는 독립 관측치·원문 검증값과 다릅니다. 합성 곡선·자동 Pr 배증·자동 승인은 없습니다."
+}

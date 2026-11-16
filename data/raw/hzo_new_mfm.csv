@@ -1,0 +1,38 @@
+﻿id,batch,paper,source,structure,crystal,bottom_electrode,top_electrode,electrode_class,thickness_nm,zr_x,deposition,dep_temp_C,anneal_temp_C,anneal_time_s,ambient,meas_V,meas_E,meas_wave,meas_freq_Hz,meas_pw_s,meas_T_K,state,twoPr,Ec,cyc_V,cyc_E,cyc_wave,cyc_freq_Hz,cyc_pw_s,endurance,end_type,end_twoPr,retain_pct,use,note
+N001,신규,N01,Lin2018,MFM,다결정,Ni 20nm (e-beam),Pt 20nm (e-beam),Ni/Pt,20,0.5,Thermal ALD (TEMAHf/TEMAZr/H2O),270,600,30,N2,,,,,,,,26,,,,,,,,,,,참고,o상 55%. 측정 전압 본문 미기재. RTA 500–750°C 스윕 중 하나
+N002,신규,N01,Lin2018,MFM,다결정,Ni 20nm (e-beam),Pt 20nm (e-beam),Ni/Pt,20,0.5,Thermal ALD (TEMAHf/TEMAZr/H2O),270,650,30,N2,,,,,,,,38,1.07,,,,,,,,,,참고,해당 스택 최대 Pr. 측정 전압 본문 미기재
+N003,신규,N01,Lin2018,MFM,다결정,Ni 20nm (e-beam),Pd 20nm (e-beam),Ni/Pd,20,0.5,Thermal ALD (TEMAHf/TEMAZr/H2O),270,700,30,N2,,,,,,,,,,4,2.0,양극,1000.0,,50000.0,시험종료,,,참고,"처음 1e4회 동안 2Pr 감소, 2e4 이후 평탄. 5e4에서 측정 중단"
+N004,신규,N01,Lin2018,MFM,다결정,Ni 20nm (e-beam),Pd 20nm (e-beam),Ni/Pd,10,0.5,Thermal ALD (TEMAHf/TEMAZr/H2O),270,700,30,N2,,,,,,,,0,,,,,,,,,,,참고,10nm Pd/HZO/Ni는 강유전성 없음
+N005,신규,N01,Lin2018,MFM,다결정,Ni 20nm (e-beam),Pd 20nm (e-beam),Ni/Pd,15,0.5,Thermal ALD (TEMAHf/TEMAZr/H2O),270,700,30,N2,,,,,,,,0,,,,,,,,,,,참고,15nm Pd/HZO/Ni도 강유전성 없음
+N006,신규,N02,LiMajumdar2025,MFM(저자 표기 MFIM),다결정,TiN ~30nm (PEALD),Ti/Au 5/50nm,TiN/Ti,10,0.5,Thermal ALD 고용체,,450,30,N2,3,3.0,P-V,1000.0,,,pristine,20,,3,3.0,양극,100000.0,,1000000000.0,시험종료,,47,참고,"S1, PDA 450°C. 1e9회에서 2Pr 47% 유지. 상부 Ti 산화층 때문에 저자는 MFIM으로 부름"
+N007,신규,N02,LiMajumdar2025,MFM(저자 표기 MFIM),다결정,TiN ~30nm (PEALD),Ti/Au 5/50nm,TiN/Ti,10,0.5,Thermal ALD 고용체,,450,30,N2,4.6,4.6,,,,,,37,,,,,,,,,,,참고,"S1 PDA. 4.6 MV/cm 직전 최대 2Pr, 그 전계에서 파괴"
+N008,신규,N02,LiMajumdar2025,MFM(저자 표기 MFIM),다결정,TiN ~30nm (PEALD),Ti/Au 5/50nm,TiN/Ti,10,0.5,Thermal ALD 고용체,,400,30,N2,4.2,4.2,,,,,,49,1.2,,,,,,,,,,참고,"S1-2, PMA 400°C. 4.2 MV/cm에서 파괴"
+N009,신규,N02,LiMajumdar2025,MFM(저자 표기 MFIM),다결정,TiN ~30nm (PEALD),Ti/Au 5/50nm,TiN/Ti,10,0.5,Thermal ALD 초격자,,400,30,N2,2.0,2,,,,,,76,,,,,,,,,,,참고,"SL5-2 초격자, PMA. 0.01 mm² 소자"
+N010,신규,N02,LiMajumdar2025,MFM(저자 표기 MFIM),다결정,TiN ~30nm (PEALD),Ti/Au 5/50nm,TiN/Ti,10,0.5,Thermal ALD 초격자,,400,30,N2,3.0,3,,,,,,90,,3,3.0,,100000.0,,100000000.0,breakdown,,95,참고,SL5-2. 1e8까지 약 5% 감소 후 파괴. wake-up 없이 4e7
+N011,신규,N02,LiMajumdar2025,MFM(저자 표기 MFIM),다결정,TiN ~30nm (PEALD),Ti/Au 5/50nm,TiN/Ti,10,0.5,Thermal ALD 초격자,,400,30,N2,,,,,,,,,,3,3.0,,100000.0,,1000000000.0,시험종료,,38,참고,"SL3-2 초격자, PMA"
+N012,신규,N02,LiMajumdar2025,MFM(저자 표기 MFIM),다결정,TiN ~30nm (PEALD),Ti/Au 5/50nm,TiN/Ti,10,0.5,Thermal ALD 초격자,,450,30,N2,,,,,,,,,,3,3.0,,100000.0,,1000000000.0,시험종료,,79,참고,"SL3-1 초격자, PDA"
+N013,신규,N02,LiMajumdar2025,MFM(저자 표기 MFIM),다결정,TiN ~30nm (PEALD),Ti/Au 5/50nm,TiN/Ti,10,0.5,Thermal ALD 초격자,,450,30,N2,,,,,,,,,,3,3.0,,100000.0,,1000000000.0,시험종료,,82,참고,"SL5-1 초격자, PDA"
+N014,신규,N03,Zhang2015,MFM,다결정,Ru 100nm / TiN 20nm,Ni 50nm,Ru/Ni,25,0.5,ALD,200,550,30,N2,14,5.6,P-V,10000.0,,,pristine,12,2.4,,,,,,1000000.0,시험종료,10,83.3,참고,Ec 2.4 MV/cm. 1e6회 후 Pr 약 5 (피로). 사이클 전압 본문 미기재. 캡핑 상태 RTP
+N015,신규,N04,WangSM2023,MFM,다결정,Mo 30nm (+TiN 장벽),TiN 50nm,Mo/TiN,9,0.5,ALD 옹스트롬 적층 (HfO2/ZrO2 6.8Å),,450,30,,3.06,3.4,,,,,wake-up 1e3 (3V 100kHz),34,,3,3.33,사다리꼴,,1e-06,100000000000.0,미기재,,,참고,B3 공정(Mo 전극). 스위칭 활성화 전계 Ea 3.45 MV/cm. 펄스폭 20ns–1ms 스위칭 측정
+N016,신규,N04,WangSM2023,MFM,다결정,TiN 100nm,TiN 50nm,TiN/TiN,9,0.5,ALD 옹스트롬 적층 (HfO2/ZrO2 6.8Å),,450,30,,,,,,,,wake-up 1e3 (3V 100kHz),,,3,3.33,사다리꼴,,1e-06,1000000000.0,미기재,,,참고,Process A. B3보다 약 2자릿수 짧음 → 1e9로 환산(그림 기준 근사)
+N017,신규,N04,WangSM2023,MFM,다결정,TiN 100nm,TiN 50nm,TiN/TiN,9,0.5,ALD 고용체,,450,30,,,,,,,,wake-up 1e3 (3V 100kHz),,,3,3.33,사다리꼴,,1e-06,100000000.0,미기재,,,참고,일반 고용체 HZO. B3보다 약 3자릿수 짧음 → 1e8로 환산(그림 기준 근사). Ea 5.3 MV/cm
+N018,신규,N05,Afroze2026,MFM,다결정,W,W,W/W,5,0.5,PE-ALD,,550,60,,,,,,,,,,,1.8,3.6,양극 펄스,2500000.0,2e-07,,breakdown,,,참고,"PE-HZO/W: wake-up 0회. ±2/±1.8/±1.6V 수명 측정, 절대값은 그림만"
+N019,신규,N05,Afroze2026,MFM,다결정,TiN,W,TiN/W,5,0.5,Thermal ALD,,550,60,,,,,,,,,,,1.8,3.6,양극 펄스,2500000.0,2e-07,,breakdown,,,참고,TiN 하부전극: wake-up 약 1e6회. 절대 수명은 그림만
+N020,신규,N05,Afroze2026,MFM,다결정,WOx/W,W,W(WOx)/W,5,0.5,Thermal ALD,,550,60,,,,,,,398,,,,1.8,3.6,양극 펄스,2500000.0,2e-07,,breakdown,,,제외,WOx 삽입: 1.8V 125°C에서 수명 약 1000배. wake-up 약 1e4회
+N021,신규,N05,Afroze2026,MFM,다결정,TiOxNy/TiN,W,TiN(TiOxNy)/W,5,0.5,Thermal ALD,,550,60,,,,,,,398,,,,1.8,3.6,양극 펄스,2500000.0,2e-07,,breakdown,,,제외,TiOxNy 삽입: 1.8V 125°C에서 수명 약 10배
+N022,신규,N06,Popovici2021,MFM,다결정,TiN 10nm,TiN 10nm,TiN/TiN,10,0.5,Thermal ALD (HfCl4/ZrCl4/H2O),300,550,60,N2,2,2.0,P-V,250000.0,,,pristine,10.8,,,,,,,,,,,권장,Hf:Zr 1:1 기준 소자. PMA(상부 TiN 후 열처리)
+N023,신규,N06,Popovici2021,MFM,다결정,TiN 10nm,TiN 10nm,TiN/TiN,10,0.5,Thermal ALD (HfCl4/ZrCl4/H2O),300,550,60,N2,2,2.0,P-V,250000.0,,,사이클 중 최대,16.4,,,,,,,,,,,권장,"1:1. 피로 시작 >1e5회. 사이클 2.5 MV/cm, 200ns 사다리꼴"
+N024,신규,N06,Popovici2021,MFM,다결정,TiN 10nm,TiN 10nm,TiN/TiN,10,0.43,Thermal ALD (HfCl4/ZrCl4/H2O),300,550,60,N2,2,2.0,P-V,250000.0,,,pristine,12.4,,,,,,,,,,,참고,"Hf 0.57. 최대 14.7, 피로 시작 >1e4회"
+N025,신규,N06,Popovici2021,MFM,다결정,TiN 10nm,TiN 10nm,TiN/TiN,10,0.57,Thermal ALD (HfCl4/ZrCl4/H2O),300,550,60,N2,2,2.0,P-V,250000.0,,,pristine,5.4,,,,,,,,,,,참고,"Hf 0.43. 최대 11.8, 피로 시작 >1e6회"
+N026,신규,N06,Popovici2021,MFM,다결정,TiN 10nm,TiN 10nm,TiN/TiN,10,0.5,Thermal ALD + La 1.6at%,300,550,60,N2,2,2.0,P-V,250000.0,,,pristine,3.1,,2.5,2.5,양극 사다리꼴,833000.0,2e-07,10000000000.0,시험종료,14.2,458.1,참고,"La 도핑 1:1. 1e6에서 10.7, 1e10에서 14.2 (wake-up이 큼)"
+N027,신규,N06,Popovici2021,MFM,다결정,TiN 10nm,TiN 10nm,TiN/TiN,10,0.43,ZrO2 2nm 시드 + La:HZO,300,550,60,N2,2,2.0,P-V,250000.0,,,,,,2.5,2.5,양극 사다리꼴,833000.0,2e-07,10000000000.0,시험종료,10.2,,제외,시드층 구조. 1e6에서 최대 14.4
+N028,신규,N07,Song2023,MFM,에피택셜,LSMO 25nm,Pt 20nm,LSMO/Pt,10,0.5,PLD,800,,,,5.5,5.5,P-V (DLCC),1000.0,,,pristine,28,,,,,,,,,,,참고,캡핑 없는 대조군. 별도 열처리 없음
+N029,신규,N07,Song2023,MFM,에피택셜,LSMO 25nm,Pt 20nm,LSMO/(HfO2 1nm)Pt,10,0.5,PLD,800,,,,5.5,5.5,P-V (DLCC),1000.0,,,pristine,28,,5,5.0,양극 사각,100000.0,,10000000000.0,2Pr<2.5 기준,,,제외,HfO2 1nm 캡핑. 2~3nm 캡핑은 Pr 5로 감소
+N030,신규,N07,Song2023,MFM,에피택셜,LSMO 25nm,Pt 20nm,LSMO/(ZrO2 1nm)Pt,10,0.5,PLD,800,,,,5.5,5.5,P-V (DLCC),1000.0,,,pristine,40,,4.5,4.5,양극 사각,100000.0,,10000000.0,하한,,,제외,ZrO2 캡핑(1–3nm 모두 Pr 약 20). 1e7 후에도 2Pr>2.5. 10년 외삽 Pr 약 12
+N031,신규,N08,Aich2024,MFM,다결정,TiN,Ru (WNx 2nm 캡핑),TiN/(WNx)Ru,,0.5,,,400,,퍼니스,2,,,,,,,25,1.27,,2,양극 (유지 0.1µs),1670000.0,1e-07,1000000000.0,하한,13.5,54.0,제외,WNx 삽입층. 6nm→2nm로 줄이면 2Pr 약 2→25(±2V). 1MHz·100kHz에서도 >1e9. 두께 초록 미기재
+N032,신규,N08,Aich2024,MFM,다결정,TiN,Ru (WNx 2nm 캡핑),TiN/(WNx)Ru,,0.5,,,400,,퍼니스,4,,,,,,,35,,,,,,,,,,,제외,WNx 2nm. ±4V. 3 MV/cm에서는 m상 증가로 피로(2e7회 TEM)
+N033,신규,N09,Rowtu2023,MFM,다결정,TiN 50nm (스퍼터),W ~50nm (스퍼터),TiN/W,10,0.5,Thermal ALD (TDMAH/TDMAZ/H2O),200,600,30,N2,3.5,3.5,PUND,,,,,39.2,,3.5,3.5,삼각,,4e-05,,breakdown,,,권장,S1 MFM. wake-up 있음. 3.5 MV/cm에서 파괴로 끝나지만 수명 수치는 그림만. o상 0.71
+N034,신규,N09,Rowtu2023,MFS,다결정,TiN 2nm (ALD) / n+Si,W ~50nm (스퍼터),Si(TiN 2nm)/W,10,0.5,Thermal ALD (TDMAH/TDMAZ/H2O),200,600,30,N2,3.5,3.5,PUND,,,,,62.4,,3.5,3.5,삼각,,4e-05,40000.0,breakdown,,,참고,S2 국부 에피(Si 하부전극). wake-up 없음. o상 0.91
+N035,신규,N09,Rowtu2023,MFS,다결정,TiN 2nm (ALD) / n+Si,W ~50nm (스퍼터),Si(TiN 2nm)/W,10,0.5,Thermal ALD (TDMAH/TDMAZ/H2O),200,600,30,N2,4.0,4.0,PUND,,,,,72,,2.5,2.5,,,,6000000.0,breakdown,,,참고,"★S2 같은 소자, 사이클 전계 2.5 MV/cm에서 6e6 (3.5 MV/cm는 4e4)"
+N036,신규,N09,Rowtu2023,MFS,다결정,TiN 6nm (ALD) / n+Si,W ~50nm (스퍼터),Si(TiN 6nm)/W,10,0.5,Thermal ALD (TDMAH/TDMAZ/H2O),200,600,30,N2,3.5,3.5,PUND,,,,,46.2,,,,,,,,,,,참고,S3
+N037,신규,N09,Rowtu2023,MFS,다결정,n+Si,W ~50nm (스퍼터),Si/W,10,0.5,Thermal ALD (TDMAH/TDMAZ/H2O),200,600,30,N2,3.5,3.5,PUND,,,,,30.4,,,,,,,,,,,참고,S4 (계면 SiOx 2nm). 파괴 대신 피로

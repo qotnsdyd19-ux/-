@@ -1,5 +1,7 @@
 # HZO Ferroelectric AI Predictor
 
+Version 2 업데이트: [통합·검증 보고서](VERSION2_REPORT.md). MFM/MFIS와 측정 정의를 분리한 301개 출처 기록을 탐색합니다. 승인 0행으로 실제 연구 예측은 차단됩니다. 아래 초기 자료 설명은 Version 1 원본의 처리 내역이며 전체 통합 수가 아닙니다.
+
 Hf₀.₅Zr₀.₅O₂ MFM 강유전체의 공정 조건과 문헌 2Pr를 탐색하고, **원문 검토를 승인한 데이터만으로** Python Random Forest를 학습하는 연구 앱입니다. Endurance 및 MFIS 예측은 포함하지 않습니다.
 
 - **GitHub Pages (`docs/`)**: 반응형 다크 테마, 연속 수치 입력 화면, 문헌 검색·필터, 2Pr 산점도, 원문 링크, CSV 및 품질 리포트 다운로드. Python 실행·업로드·학습 기능은 없습니다.
