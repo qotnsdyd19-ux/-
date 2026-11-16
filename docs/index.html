@@ -1905,7 +1905,10 @@
   }
 
   return records;
-}  const file = byId("dataFile").files[0];
+}
+
+async function importFile() {
+  const file = byId("dataFile").files[0];
 
       if (!file) {
         byId("importStatus").textContent = "먼저 파일을 선택하세요.";
