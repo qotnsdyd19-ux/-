@@ -9,7 +9,11 @@ from src.data import SCHEMA, normalize_doi
 from src.model import NUM, CAT, REQUIRED, apply_reviews
 
 CONFIRMED = set(REQUIRED + ['two_pr','metric','structure','composition','scope_verified','measurement_definition','voltage_definition'])
-CORRECTIONS = set(NUM+CAT+['anneal_type','structure','composition','doi','source_locator','top_interlayer_nm','bottom_interlayer_nm'])
+CORRECTIONS = set(NUM+CAT+['anneal_type','structure','composition','doi','source_locator','top_interlayer_nm','bottom_interlayer_nm','voltage_definition'])
+
+def required_confirmations(row,corrections):
+    present={k for k in NUM+CAT if pd.notna(corrections.get(k,row.get(k)))}
+    return CONFIRMED | present
 
 def record_digest(row):
     values={}
@@ -58,7 +62,7 @@ def verified_dataset(df,manifest_path,cache_dir):
             confirmed.update(evidence.get('confirms',[]))
             citations.append({'url':source['url'],'sha256':digest,'locator':evidence['locator'],'excerpt':excerpt})
         if status=='approved':
-            missing=CONFIRMED-set(confirmed)
+            missing=required_confirmations(row,corrections)-set(confirmed)
             if missing:raise ValueError('원문 확인 항목 부족: '+', '.join(sorted(missing)))
             definition=decision.get('measurement_definition')
             method=corrections.get('measurement_method',row.get('measurement_method'))

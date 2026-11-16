@@ -27,7 +27,23 @@
   "training": {
     "status": "blocked_before_fit",
     "reason": "동일 측정 방법으로 승인된 20개 관측치 및 5개 DOI가 필요합니다.",
-    "cross_validation": "not_run_by_public_export"
+    "cross_validation": "not_run_by_public_export",
+    "requirements_by_method": [
+      {
+        "method": "P-E",
+        "approved_rows": 0,
+        "approved_dois": 0,
+        "missing_rows": 20,
+        "missing_dois": 5
+      },
+      {
+        "method": "PUND",
+        "approved_rows": 0,
+        "approved_dois": 0,
+        "missing_rows": 20,
+        "missing_dois": 5
+      }
+    ]
   },
   "targets": [
     {
@@ -119,18 +135,41 @@
       "reason": "고장 정의·검열을 처리하는 별도 모델 미검증"
     }
   ],
+  "feature_policy": {
+    "required": [
+      "hzo_nm",
+      "anneal_c",
+      "voltage_v",
+      "top",
+      "bottom",
+      "measurement_method",
+      "measurement_state",
+      "source_locator",
+      "doi"
+    ],
+    "optional_numeric": [
+      "top_nm",
+      "bottom_nm",
+      "anneal_s",
+      "wake_cycles",
+      "ald_c",
+      "pulse_s",
+      "frequency_hz"
+    ],
+    "optional_categorical": [
+      "atmosphere",
+      "deposition"
+    ],
+    "source_approval_required": true,
+    "raw_missing_values_preserved": true
+  },
   "exclusion_counts": {
     "원문 승인 대기": 301,
     "RTA 미확인 / 비RTA": 242,
     "단층·다결정·삽입층 없음 미확인": 301,
     "결측: hzo_nm": 51,
-    "결측: top_nm": 169,
-    "결측: bottom_nm": 182,
     "결측: anneal_c": 90,
-    "결측: anneal_s": 135,
     "결측: voltage_v": 191,
-    "결측: wake_cycles": 211,
-    "결측: atmosphere": 148,
     "결측: measurement_method": 285,
     "결측: measurement_state": 177,
     "P-E/PUND 정의 미확인": 296,
@@ -145,8 +184,7 @@
     "Pr·하한·충돌은 2Pr 점값 학습에서 제외": 26,
     "결측: top": 18,
     "결측: bottom": 18,
-    "결측: source_locator": 100,
-    "2Pr 양수 필요": 2
+    "결측: source_locator": 100
   },
   "deployment": {
     "static": "GitHub Pages",

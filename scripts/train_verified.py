@@ -23,13 +23,17 @@ def main():
              'measurement_method':args.method,'required_rows':MIN_ROWS,'required_dois':MIN_DOIS,
              'dataset_hash':fingerprint(reviewed),'decisions':audit,'cross_validation':'not_run'}
     out=root/'artifacts';out.mkdir(exist_ok=True)
+    def save_attempt():
+        content=json.dumps(attempt,ensure_ascii=False,indent=2)
+        (out/'training_attempt.json').write_text(content)
+        (out/('training_attempt_'+args.method+'.json')).write_text(content)
     if len(good)<MIN_ROWS or good.doi.nunique()<MIN_DOIS:
         attempt['reason']='원문 근거를 확인한 동일 측정 방법의 승인 관측치와 독립 DOI 부족'
-        (out/'training_attempt.json').write_text(json.dumps(attempt,ensure_ascii=False,indent=2))
+        save_attempt()
         print(json.dumps(attempt,ensure_ascii=False,indent=2));return 2
     bundle=train(reviewed,args.output,method=args.method);report=bundle['report']
     attempt.update(status='passed' if report['active'] else 'failed_validation',cross_validation='completed',metrics=report['forest'],baseline=report['baseline'])
-    (out/'training_attempt.json').write_text(json.dumps(attempt,ensure_ascii=False,indent=2))
+    save_attempt()
     if report['active']:
         folder=Path(args.output)/report['version']
         review={'source_review_verified':True,'dataset_hash':report['dataset_hash'],'decisions':audit,'source_release_sha256':source_release_digest(root),

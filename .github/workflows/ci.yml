@@ -15,7 +15,8 @@ jobs:
       - run: pip install -r requirements-dev.txt
       - run: python -m pytest -q
       - run: python scripts/build_site.py
-      - run: git diff --exit-code -- data docs
+      - run: python scripts/audit_training_data.py
+      - run: git diff --exit-code -- data docs TRAINING_AUDIT.md
       - run: python -m playwright install --with-deps chromium
       - name: Functional browser checks
         shell: bash

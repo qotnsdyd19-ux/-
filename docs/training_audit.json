@@ -1,0 +1,198 @@
+{
+  "status": "데이터 검증 부족으로 학습 불가",
+  "total_source_records": 301,
+  "mfm_2pr_candidate_rows": 161,
+  "mfm_candidate_known_dois": 30,
+  "approved_rows": 0,
+  "approved_dois": 0,
+  "legacy_required_fields": [
+    "hzo_nm",
+    "top_nm",
+    "bottom_nm",
+    "anneal_c",
+    "anneal_s",
+    "voltage_v",
+    "wake_cycles",
+    "top",
+    "bottom",
+    "atmosphere",
+    "measurement_method",
+    "measurement_state",
+    "source_locator",
+    "doi"
+  ],
+  "core_required_fields": [
+    "hzo_nm",
+    "anneal_c",
+    "voltage_v",
+    "top",
+    "bottom",
+    "measurement_method",
+    "measurement_state",
+    "source_locator",
+    "doi"
+  ],
+  "optional_numeric_fields": [
+    "top_nm",
+    "bottom_nm",
+    "anneal_s",
+    "wake_cycles",
+    "ald_c",
+    "pulse_s",
+    "frequency_hz"
+  ],
+  "optional_categorical_fields": [
+    "atmosphere",
+    "deposition"
+  ],
+  "reported_missing_counts": {
+    "hzo_nm": 24,
+    "top_nm": 78,
+    "bottom_nm": 77,
+    "anneal_c": 34,
+    "anneal_s": 63,
+    "voltage_v": 79,
+    "wake_cycles": 97,
+    "top": 8,
+    "bottom": 13,
+    "atmosphere": 65,
+    "measurement_method": 151,
+    "measurement_state": 86,
+    "source_locator": 52,
+    "doi": 43,
+    "ald_c": 80,
+    "pulse_s": 160,
+    "frequency_hz": 139,
+    "deposition": 56
+  },
+  "legacy_complete_rows": 0,
+  "core_complete_rows": 0,
+  "rows_with_doi_and_reported_method": 0,
+  "rows_with_supported_method": 1,
+  "source_overlap_candidate_rows": 14,
+  "secondary_evidence_hint_rows": 19,
+  "training_requirement": {
+    "min_rows_per_method": 20,
+    "min_independent_dois": 5,
+    "missing_approved_rows": 20,
+    "missing_approved_dois": 5
+  },
+  "training": "not_fitted",
+  "cross_validation": "not_run",
+  "MAE": null,
+  "RMSE": null,
+  "R2": null,
+  "public_research_model_two_input_test": "not_run_no_validated_model",
+  "public_inference_deployment": "not_deployed",
+  "mfis": {
+    "source_rows": 35,
+    "two_pr_candidates": 20,
+    "memory_window_labels": 0,
+    "threshold_shift_labels": 0,
+    "endurance_candidates": 13
+  },
+  "workbooks": [
+    {
+      "file": "HZO_MFM 20 논문의 데이터값..xlsx",
+      "sheets": [
+        {
+          "name": "01_2Pr_40행",
+          "rows": 41,
+          "columns": 24
+        },
+        {
+          "name": "02_수치원문확인_10행",
+          "rows": 11,
+          "columns": 24
+        },
+        {
+          "name": "03_논문_20편",
+          "rows": 21,
+          "columns": 11
+        },
+        {
+          "name": "04_2Pr아닌자료_9행",
+          "rows": 10,
+          "columns": 12
+        },
+        {
+          "name": "05_사용법",
+          "rows": 13,
+          "columns": 2
+        }
+      ]
+    },
+    {
+      "file": "HZO_MFM_MFIS_확장통합_2026-11-16.xlsx",
+      "sheets": [
+        {
+          "name": "00_README",
+          "rows": 31,
+          "columns": 2
+        },
+        {
+          "name": "01_ALL_MERGED",
+          "rows": 153,
+          "columns": 44
+        },
+        {
+          "name": "02_NEW_PRIMARY",
+          "rows": 59,
+          "columns": 44
+        },
+        {
+          "name": "03_MFM",
+          "rows": 89,
+          "columns": 44
+        },
+        {
+          "name": "04_MFIS",
+          "rows": 23,
+          "columns": 44
+        },
+        {
+          "name": "05_PR_CONFLICT",
+          "rows": 25,
+          "columns": 44
+        },
+        {
+          "name": "06_ENDURANCE",
+          "rows": 101,
+          "columns": 44
+        },
+        {
+          "name": "07_PROCESS_ONLY",
+          "rows": 12,
+          "columns": 44
+        },
+        {
+          "name": "09_NEW_ONLY",
+          "rows": 68,
+          "columns": 44
+        },
+        {
+          "name": "08_PAPER_INDEX",
+          "rows": 38,
+          "columns": 10
+        }
+      ]
+    },
+    {
+      "file": "HZO_데이터2.xlsx",
+      "sheets": [
+        {
+          "name": "데이터",
+          "rows": 67,
+          "columns": 28
+        },
+        {
+          "name": "논문목록",
+          "rows": 30,
+          "columns": 6
+        }
+      ]
+    }
+  ],
+  "pdf_request_groups": 49,
+  "interpretation": "Counts describe supplied metadata, not verified measurements or independent devices. No missing value was invented and no row was approved."
+}

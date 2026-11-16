@@ -29,7 +29,7 @@ function updateModel() {
   byId('approvedModelRows').textContent = selected ? selected.rows+'행 / '+selected.dois+' DOI' : '선택한 모델 없음';
   byId('validationStatus').textContent = selected ? 'DOI 그룹 교차검증 통과' : '미검증';
   byId('selectedMetrics').textContent = selected ? [selected.forest.MAE,selected.forest.RMSE,selected.forest.R2].map(v=>finite(v)?v.toFixed(3):'N/A').join(' / ') : 'N/A';
-  byId('modelDetails').textContent = selected ? JSON.stringify({version:selected.version,dataset_hash:selected.dataset_hash,approved_rows:selected.rows,independent_dois:selected.dois,measurement_method:selected.measurement_method,validation:selected.forest,baseline:selected.baseline,limits:selected.limits,categories:selected.categories,limitations:selected.limitations},null,2) : '이 구조·출력·측정 방법의 검증 모델 없음';
+  byId('modelDetails').textContent = selected ? JSON.stringify({version:selected.version,dataset_hash:selected.dataset_hash,approved_rows:selected.rows,independent_dois:selected.dois,measurement_method:selected.measurement_method,validation:selected.forest,baseline:selected.baseline,limits:selected.limits,categories:selected.categories,used_features:selected.used_features,unused_features:selected.unused_features,missing_allowed:selected.missing_allowed,missing_policy:selected.missing_policy,limitations:selected.limitations},null,2) : '이 구조·출력·측정 방법의 검증 모델 없음';
   byId('predictionStatus').textContent = selected ? '검증 결과와 입력 범위를 확인한 뒤 실행하세요. 입력 예시는 검증된 조건이나 예측 결과가 아닙니다.' : '이 구조·출력·측정 방법은 원문 승인·모델 검증 전이므로 예측을 제공하지 않습니다.';
   if (selected) {
     for (const [key,id] of Object.entries(columns)) {
@@ -37,7 +37,15 @@ function updateModel() {
       input.replaceChildren(new Option('선택 필요',''));
       for (const v of selected.categories[key] || []) input.add(new Option(v,v));
       input.value=(selected.categories[key] || []).includes(prior) ? prior : '';
-      input.required=true;
+      input.required=!(selected.missing_allowed || []).includes(key) && !(selected.unused_features || []).includes(key);
+      input.disabled=(selected.unused_features || []).includes(key);
+    }
+    const numeric={hzo_nm:'hzoInput',top_nm:'topThicknessInput',bottom_nm:'bottomThicknessInput',anneal_c:'temperatureInput',anneal_s:'timeInput',voltage_v:'voltageInput',wake_cycles:'wakeInput',ald_c:'aldInput',pulse_s:'pulseInput',frequency_hz:'frequencyInput'};
+    for (const [key,id] of Object.entries(numeric)) {
+      const input=byId(id), unused=(selected.unused_features || []).includes(key);
+      input.disabled=unused;
+      input.required=!unused && !(selected.missing_allowed || []).includes(key);
+      if (unused) input.value='';
     }
   }
 }
@@ -80,7 +88,7 @@ async function connect() {
 
 function inputs() {
   return {hzo_nm:number('hzoInput'),top_nm:number('topThicknessInput'),bottom_nm:number('bottomThicknessInput'),anneal_c:number('temperatureInput'),anneal_s:number('timeInput'),voltage_v:number('voltageInput'),wake_cycles:number('wakeInput'),
-    top:byId('topInput').value,bottom:byId('bottomInput').value,atmosphere:byId('atmosphereInput').value,measurement_method:byId('methodInput').value,measurement_state:byId('measurementStateInput').value,deposition:byId('depositionInput').value,
+    top:byId('topInput').value,bottom:byId('bottomInput').value,atmosphere:byId('atmosphereInput').value||null,measurement_method:byId('methodInput').value,measurement_state:byId('measurementStateInput').value,deposition:byId('depositionInput').value||null,
     ald_c:number('aldInput'),pulse_s:number('pulseInput'),frequency_hz:number('frequencyInput'),top_interlayer_nm:number('topInterlayerInput')??0,bottom_interlayer_nm:number('bottomInterlayerInput')??0,multilayer:(number('topInterlayerInput')??0)>0 || (number('bottomInterlayerInput')??0)>0};
 }
 
