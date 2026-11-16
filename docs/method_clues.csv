@@ -1,0 +1,22 @@
+record_id,sample_id,doi,mention,original_cells,status
+acb253d5a797a78d1c24,NEW001,10.1088/1674-1056/aca9c6,P-E/P-V,"{""특이사항 / 확인 필요"": ""동일 소자에서 서로 다른 P-E 측정 전계; 2Pr 행 간 독립샘플 아님. Anneal time not reported in consulted text""}",unverified_mention_may_include_negation
+72dbf01de11bee35619c,NEW002,10.1088/1674-1056/aca9c6,P-E/P-V,"{""특이사항 / 확인 필요"": ""동일 소자에서 서로 다른 P-E 측정 전계; 2Pr 행 간 독립샘플 아님. Anneal time not reported in consulted text""}",unverified_mention_may_include_negation
+1a8bb89e9092e68f1dd6,NEW003,10.1088/1674-1056/aca9c6,P-E/P-V,"{""특이사항 / 확인 필요"": ""동일 소자에서 서로 다른 P-E 측정 전계; 2Pr 행 간 독립샘플 아님. Anneal time not reported in consulted text""}",unverified_mention_may_include_negation
+a687591bf2fcf154bbc4,NEW047,10.1016/j.rsurfi.2026.100979,PUND,"{""특이사항 / 확인 필요"": ""Electrode types and PMA not exposed in abstract. Switchable PUND=34.2 is a distinct metric, NOT 2Pr. Same device at different cycling temperatures.""}",unverified_mention_may_include_negation
+8855f35b018a69666d67,NEW048,10.1016/j.rsurfi.2026.100979,PUND,"{""특이사항 / 확인 필요"": ""Electrode types and PMA not exposed in abstract. Switchable PUND=34.2 is a distinct metric, NOT 2Pr. Same device at different cycling temperatures.""}",unverified_mention_may_include_negation
+f302564e199258a88d82,NEW053,10.1038/s41378-026-01429-4,PUND,"{""특이사항 / 확인 필요"": ""Unusually high 2Pr; verify PUND/leakage protocols from primary manuscript; precise process conditions missing.""}",unverified_mention_may_include_negation
+37236656377174cb7492,EXT001,10.3389/fmats.2022.969188,PUND,"{""실험 변수"": ""500-700°C series; RTA 500°C; PUND 100 kHz"", ""2Pr/Pr 상태"": ""after 1e6-cycle wake-up; 100kHz PUND""}",unverified_mention_may_include_negation
+903641ef0b4e10ea0bde,EXT003,10.3389/fmats.2022.969188,PUND,"{""실험 변수"": ""500-700°C series; RTA 600°C; PUND 100 kHz"", ""2Pr/Pr 상태"": ""after 1e6-cycle wake-up; 100kHz PUND""}",unverified_mention_may_include_negation
+c0c1a0573b4ef90b48ed,EXT004,10.3389/fmats.2022.969188,PUND,"{""2Pr/Pr 상태"": ""after 1e8 cycling; PUND""}",unverified_mention_may_include_negation
+b2b3075c69aab9134af1,EXT005,10.3389/fmats.2022.969188,PUND,"{""실험 변수"": ""500-700°C series; RTA 700°C; PUND 100 kHz"", ""2Pr/Pr 상태"": ""after 1e6-cycle wake-up; 100kHz PUND""}",unverified_mention_may_include_negation
+080c0587d3c9d1334543,EXT006,10.3389/fmats.2022.969188,PUND,"{""2Pr/Pr 상태"": ""after 1e8 cycling; PUND""}",unverified_mention_may_include_negation
+d6db9c4a47d99d46a163,EXT010,10.3389/fmats.2022.969188,PUND,"{""실험 변수"": ""PUND measurement frequency 1000Hz"", ""추가 전처리/측정"": ""PUND measurement frequency 1000Hz; cycle frequency 111kHz""}",unverified_mention_may_include_negation
+c5ca1e9ad804b89b6c49,EXT011,10.3389/fmats.2022.969188,PUND,"{""실험 변수"": ""PUND measurement frequency 10000Hz"", ""추가 전처리/측정"": ""PUND measurement frequency 10000Hz; cycle frequency 111kHz""}",unverified_mention_may_include_negation
+11ac4bc363adbaf038ac,EXT012,10.3389/fmats.2022.969188,PUND,"{""실험 변수"": ""PUND measurement frequency 100000Hz"", ""추가 전처리/측정"": ""PUND measurement frequency 100000Hz; cycle frequency 111kHz""}",unverified_mention_may_include_negation
+b0863d9807fef6e4ec8f,EXT025,10.1021/acsami.4c17978,PUND,"{""추가 전처리/측정"": ""PUND @ 1kHz; 3.0 MV/cm cycling; separate 2.5 MV/cm series also measured""}",unverified_mention_may_include_negation
+a4e2ed9ed4bb64fae8bf,EXT026,10.1021/acsami.4c17978,PUND,"{""추가 전처리/측정"": ""PUND @ 1kHz; 3.0 MV/cm cycling; separate 2.5 MV/cm series also measured""}",unverified_mention_may_include_negation
+486a6f3eed3d08e77e26,EXT027,10.1021/acsami.4c17978,PUND,"{""추가 전처리/측정"": ""PUND @ 1kHz; 3.0 MV/cm cycling; separate 2.5 MV/cm series also measured""}",unverified_mention_may_include_negation
+86b51e7a6fabe95d263b,EXT028,10.1021/acsami.4c17978,PUND,"{""추가 전처리/측정"": ""PUND @ 1kHz; 3.0 MV/cm cycling; separate 2.5 MV/cm series also measured""}",unverified_mention_may_include_negation
+461fe86182c67ff7cdfb,EXT029,10.1021/acsami.4c17978,PUND,"{""추가 전처리/측정"": ""PUND @ 1kHz; 3.0 MV/cm cycling; separate 2.5 MV/cm series also measured""}",unverified_mention_may_include_negation
+b428899b10bd9860c72e,EXT030,10.1021/acsami.4c17978,PUND,"{""추가 전처리/측정"": ""PUND @ 1kHz; 3.0 MV/cm cycling; separate 2.5 MV/cm series also measured""}",unverified_mention_may_include_negation
+08d5d9076745b36700bc,P22,,PUND,"{""27:비고"": ""에피택셜. 일반 PUND. -10MV/cm SET 후 50.5 (저항변화 기여 포함)""}",unverified_mention_may_include_negation

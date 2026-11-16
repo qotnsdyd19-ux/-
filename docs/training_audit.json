@@ -69,6 +69,10 @@
   "core_complete_rows": 0,
   "rows_with_doi_and_reported_method": 0,
   "rows_with_supported_method": 1,
+  "raw_method_mention_counts": {
+    "P-E/P-V": 3,
+    "PUND": 18
+  },
   "source_overlap_candidate_rows": 14,
   "secondary_evidence_hint_rows": 19,
   "training_requirement": {

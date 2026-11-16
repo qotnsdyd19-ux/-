@@ -2,6 +2,7 @@
 import json
 from pathlib import Path
 import sys
+import re
 from collections import Counter
 import pandas as pd
 from openpyxl import load_workbook
@@ -16,6 +17,16 @@ def audit(root):
     root=Path(root);df,_,_=load_sources(root/'data/raw')
     m=df[df.structure.eq('MFM') & df.metric.eq('2Pr') & df.two_pr.notna()].copy()
     mfis=df[df.structure.eq('MFIS')]
+    method_clues=[]
+    for _,row in m[m.measurement_method.isna()].iterrows():
+        raw=json.loads(row.raw_json)
+        for mention,pattern in [('PUND',r'\bPUND\b'),('P-E/P-V',r'P\s*[-–−]\s*[EV]\b')]:
+            hits={k:v for k,v in raw.items() if isinstance(v,str) and re.search(pattern,v,re.I)}
+            if hits:method_clues.append({'record_id':row.record_id,'sample_id':row.sample_id,'doi':row.doi,
+                                        'mention':mention,'original_cells':json.dumps(hits,ensure_ascii=False),
+                                        'status':'unverified_mention_may_include_negation'})
+    pd.DataFrame(method_clues).to_csv(root/'docs/method_clues.csv',index=False)
+    clue_counts=dict(Counter(r['mention'] for r in method_clues))
     missing={k:int(m[k].isna().sum()) for k in dict.fromkeys(LEGACY_REQUIRED+OPTIONAL_NUM+OPTIONAL_CAT)}
     complete=lambda fields:int(m[fields].notna().all(axis=1).sum())
     inventory=[]
@@ -65,7 +76,7 @@ def audit(root):
             'optional_numeric_fields':OPTIONAL_NUM,'optional_categorical_fields':OPTIONAL_CAT,
             'reported_missing_counts':missing,'legacy_complete_rows':complete(LEGACY_REQUIRED),'core_complete_rows':complete(REQUIRED),
             'rows_with_doi_and_reported_method':int((m.doi.notna() & m.measurement_method.notna()).sum()),
-            'rows_with_supported_method':int(m.measurement_method.isin(['P-E','PUND']).sum()),
+            'rows_with_supported_method':int(m.measurement_method.isin(['P-E','PUND']).sum()),'raw_method_mention_counts':clue_counts,
             'source_overlap_candidate_rows':int(m.possible_overlap.sum()),'secondary_evidence_hint_rows':int(secondary.sum()),
             'training_requirement':{'min_rows_per_method':MIN_ROWS,'min_independent_dois':MIN_DOIS,'missing_approved_rows':max(0,MIN_ROWS-len(approved)),'missing_approved_dois':max(0,MIN_DOIS-approved.doi.nunique())},
             'training':'not_fitted','cross_validation':'not_run','MAE':None,'RMSE':None,'R2':None,
@@ -78,7 +89,8 @@ def audit(root):
            f'원본 Excel의 {sum(len(w["sheets"]) for w in inventory)}개 시트와 통합 {len(df)}행을 다시 검사했습니다. MFM 2Pr 후보 {len(m)}행, DOI가 있는 후보 {int(m.doi.notna().sum())}행 / {int(m.doi.nunique())} DOI입니다. 후보 수는 원문 승인 수나 독립 소자 수가 아닙니다.','',
            f'| 필드 | 후보 {len(m)}행 중 결측 | 수정한 정책 |','|---|---:|---|']
     for field in LEGACY_REQUIRED:lines.append(f'| {field} | {missing[field]} | '+('필수: 측정 대상·조건·출처 식별' if field in REQUIRED else '선택: 실제 보고·검증된 값만 사용, 원본 결측 유지')+' |')
-    lines += ['',f'기존 필수 항목이 모두 기록된 행: {report["legacy_complete_rows"]}. 선택 변수 5개를 필수에서 제외한 뒤 핵심 항목이 모두 기록된 행도 {report["core_complete_rows"]}입니다. **DOI와 측정 방법이 동시에 기록된 행이 {report["rows_with_doi_and_reported_method"]}행**이므로 선택 변수 완화만으로 원문 검증 문제를 해결할 수 없습니다.', '',
+    lines += ['',f'기존 필수 항목이 모두 기록된 행: {report["legacy_complete_rows"]}. 선택 변수 5개를 필수에서 제외한 뒤 핵심 항목이 모두 기록된 행도 {report["core_complete_rows"]}입니다. **정규화된 전용 열에서 DOI와 측정 방법이 동시에 기록된 행이 {report["rows_with_doi_and_reported_method"]}행**이므로 선택 변수 완화만으로 원문 검증 문제를 해결할 수 없습니다.', '',
+              f'다만 전용 열의 결측이 원자료 어디에도 단서가 없다는 뜻은 아닙니다. 비고·상태 등 원본 셀에 PUND가 언급된 {clue_counts.get("PUND",0)}행, P-E/P-V가 언급된 {clue_counts.get("P-E/P-V",0)}행을 [원본 측정법 단서](docs/method_clues.csv)에 별도 보존했습니다. `not PUND` 같은 부정 문맥도 포함되므로 이 언급을 측정법 확정이나 승인으로 자동 변환하지 않았습니다. 정확한 측정 정의와 대상 관측치를 원문에서 대조해야 합니다.', '',
               '전극 두께·열처리 시간·분위기·정확한 wake-up 횟수는 연구 결과에 영향을 줄 수 있지만, 제한된 관측 자료에서 모두 필수로 두는 것은 과도했습니다. 해당 필드는 선택으로 바꿨습니다. 원본/공개 CSV에 값을 채우지 않습니다. 실제 검증된 선택 값만 사용하고, 보간은 학습 fold 안에서만 수행하며 수치 결측 표시자를 추가합니다. 전체 결측 열은 모델에서 제외합니다. 모델이 학습하지 않은 변수의 값을 입력해 효과를 예측했다고 표시하지 않습니다.', '',
               'hzo_nm·anneal_c·voltage_v와 전극·측정 방법·측정 상태·DOI·원문 위치는 이 공정/측정 조건 기반 2Pr 모델의 필수 항목으로 유지합니다. 구조 MFM, 조성, 삽입층/다층 여부와 2Pr/Pr/PUND 및 전압 정의는 별도의 원문 확인 대상입니다. 확인되지 않은 상태를 pristine, wake-up 0회, RTA 또는 단일 전극으로 추측하지 않습니다. 명시적으로 측정한 2Pr=0은 허용하되, “강유전성 없음”이라는 문장만으로 0을 만들어 승인하지 않습니다.', '',
               '## 원문 확인과 필요한 PDF','',
@@ -92,7 +104,7 @@ def audit(root):
               '## MFIS','',
               f'MFIS {len(mfis)}행 중 Memory Window 수치 {report["mfis"]["memory_window_labels"]}행, Threshold Voltage Shift 수치 {report["mfis"]["threshold_shift_labels"]}행입니다. 2Pr 후보 {report["mfis"]["two_pr_candidates"]}행을 Memory Window나 MFM 모델로 바꾸어 사용하지 않습니다. 별도 MFIS 학습 모델은 아직 학습할 수 없습니다.', '',
               '[MFIS 원문·실측값 요청 목록](docs/mfis_measurement_requests.csv)도 별도로 작성했습니다. 첨부 원본의 모든 열·비고를 확인했으며, 논문 제목의 memory 및 Pr/파괴 임계값을 Vth 측정값으로 오인하지 않았습니다. 이는 첨부 자료의 레이블 부재를 뜻하며, 접근하지 못한 논문 전체에 해당 측정값이 없다는 주장과는 다릅니다.', '',
-              '추가로 필요한 실측 열: sample/device ID, DOI/원문 위치, 게이트 재료/두께, HZO 조성/두께, IL 재료/두께/위치, 반도체/도핑, 열처리, program/erase 각각의 전압·펄스폭, read 지연/바이어스, 온도, 반복 횟수와 상태. Memory Window는 측정 정의별로 구분해야 합니다. FeFET의 Vth_program−Vth_erase (V)는 두 Vth와 전류/드레인 바이어스·추출 기준을, MFIS capacitor의 Vfb 차이 또는 C-V 히스테리시스 폭은 두 전압과 flat-band/C 기준·주파수·스윕 방향을 함께 보고해야 합니다. 이 정의들을 하나의 MW 레이블로 합치지 않습니다. Threshold shift는 실제 FET의 Vth(N)−Vth(reference) (V)와 기준 상태를 명시해야 하며, capacitor의 ΔVfb를 ΔVth로 바꾸지 않습니다. Endurance는 고장 기준과 시험 종료/검열 구분 및 Ncycles에서의 실제 MW/ΔVth를 별도로 제공해야 합니다. 단위·측정 정의가 없는 숫자를 임의로 결합하지 않습니다.', '',
+              '필수 레이블은 실제 수치·단위·측정 정의·기준 상태·소자 식별자·원문 출처입니다. 아래 입력 메타데이터 목록은 수집 권장사항이며 전 항목을 일괄 필수 학습 조건으로 지정한 것은 아닙니다. 사용할 입력 변수는 실측 자료의 분포를 확인한 뒤 결정해야 합니다. 수집할 메타데이터: sample/device ID, DOI/원문 위치, 게이트 재료/두께, HZO 조성/두께, IL 재료/두께/위치, 반도체/도핑, 열처리, program/erase 각각의 전압·펄스폭, read 지연/바이어스, 온도, 반복 횟수와 상태. Memory Window는 측정 정의별로 구분해야 합니다. FeFET의 Vth_program−Vth_erase (V)는 두 Vth와 전류/드레인 바이어스·추출 기준을, MFIS capacitor의 Vfb 차이 또는 C-V 히스테리시스 폭은 두 전압과 flat-band/C 기준·주파수·스윕 방향을 함께 보고해야 합니다. 이 정의들을 하나의 MW 레이블로 합치지 않습니다. Threshold shift는 실제 FET의 Vth(N)−Vth(reference) (V)와 기준 상태를 명시해야 하며, capacitor의 ΔVfb를 ΔVth로 바꾸지 않습니다. Endurance는 고장 기준과 시험 종료/검열 구분 및 Ncycles에서의 실제 MW/ΔVth를 별도로 제공해야 합니다. 단위·측정 정의가 없는 숫자를 임의로 결합하지 않습니다.', '',
               '## 학습·배포·실제 작동 여부','',
               '기존 Python API·모델 버전·범위 검사·사이트 연결 코드는 유지했습니다. 실제 승인 모델이 없으므로 공개 Python 추론 서버를 활성화하거나 Pages 버튼을 임의로 켜지 않았습니다. 공개 연구 모델로 두 입력을 계산하는 검증은 미실행입니다. 합성 fixture의 소프트웨어 테스트는 이 완료 기준을 충족하지 않습니다. 배포 계정 연결과 실제 검증 모델 내보내기 후에만 [배포 절차](DEPLOYMENT.md)를 진행할 수 있습니다. 새 디자인이나 기능 추가를 완료로 대체하지 않습니다.','']
     (root/'TRAINING_AUDIT.md').write_text('\n'.join(lines))
