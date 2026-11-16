@@ -2,7 +2,7 @@
 import json
 from collections import Counter
 from pathlib import Path
-from src.model import eligible, reasons, train
+from src.model import eligible, reasons, readiness, MIN_ROWS, MIN_DOIS
 
 def write_report(df,out):
     out=Path(out); out.mkdir(parents=True,exist_ok=True)
@@ -10,12 +10,10 @@ def write_report(df,out):
     review['exclusion_reasons']=df.apply(lambda r:'; '.join(reasons(r)),axis=1)
     review.to_csv(out/'review_queue.csv',index=False)
     good=eligible(df)
-    try:
-        train(df,out/'models')
-    except ValueError as exc:
-        training={'status':'blocked_before_fit','reason':str(exc),'cross_validation':'not_run_on_unapproved_data'}
-    else:
-        raise RuntimeError('Public export must not train or publish a model')
+    can_train=any(readiness(df,method) for method in ['P-E','PUND'])
+    training={'status':'ready_for_training' if can_train else 'blocked_before_fit',
+              'reason':f'동일 측정 방법으로 승인된 {MIN_ROWS}개 관측치 및 {MIN_DOIS}개 DOI가 필요합니다.',
+              'cross_validation':'not_run_by_public_export'}
     targets=[]
     for structure in ['MFM','MFIS']:
         part=df[df.structure.eq(structure)]

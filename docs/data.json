@@ -9312,7 +9312,7 @@
     "measurement_definition":"after 1e6-cycle wake-up; 100kHz PUND",
     "original_structure":"MFM",
     "review_status":"pending",
-    "possible_overlap":false
+    "possible_overlap":true
   },
   {
     "record_id":"9f4a7dc2720a51040715",
@@ -9450,7 +9450,7 @@
     "measurement_definition":"after 1e6-cycle wake-up; 100kHz PUND",
     "original_structure":"MFM",
     "review_status":"pending",
-    "possible_overlap":false
+    "possible_overlap":true
   },
   {
     "record_id":"c0c1a0573b4ef90b48ed",
@@ -9933,7 +9933,7 @@
     "measurement_definition":"frequency dependence after wake-up",
     "original_structure":"MFM",
     "review_status":"pending",
-    "possible_overlap":false
+    "possible_overlap":true
   },
   {
     "record_id":"c5ca1e9ad804b89b6c49",
@@ -10002,7 +10002,7 @@
     "measurement_definition":"frequency dependence after wake-up",
     "original_structure":"MFM",
     "review_status":"pending",
-    "possible_overlap":false
+    "possible_overlap":true
   },
   {
     "record_id":"11ac4bc363adbaf038ac",
@@ -10071,7 +10071,7 @@
     "measurement_definition":"frequency dependence after wake-up",
     "original_structure":"MFM",
     "review_status":"pending",
-    "possible_overlap":false
+    "possible_overlap":true
   },
   {
     "record_id":"0acd834e0934e80d1315",
@@ -13875,7 +13875,7 @@
     "source_row":5,
     "sample_id":"P01",
     "paper":"Asapu et al., Front. Mater. 9:969188 (2022)",
-    "doi":"10.3389\/fmats.2022.969188\/full",
+    "doi":"10.3389\/fmats.2022.969188",
     "source_url":"https:\/\/www.frontiersin.org\/journals\/materials\/articles\/10.3389\/fmats.2022.969188\/full",
     "source_locator":null,
     "metric":"2Pr",
@@ -13935,7 +13935,7 @@
     "measurement_definition":null,
     "original_structure":null,
     "review_status":null,
-    "possible_overlap":false
+    "possible_overlap":true
   },
   {
     "record_id":"24db2b66fdecca36275c",
@@ -13944,7 +13944,7 @@
     "source_row":6,
     "sample_id":"P01",
     "paper":"Asapu et al., Front. Mater. 9:969188 (2022)",
-    "doi":"10.3389\/fmats.2022.969188\/full",
+    "doi":"10.3389\/fmats.2022.969188",
     "source_url":"https:\/\/www.frontiersin.org\/journals\/materials\/articles\/10.3389\/fmats.2022.969188\/full",
     "source_locator":null,
     "metric":"2Pr",
@@ -14004,7 +14004,7 @@
     "measurement_definition":null,
     "original_structure":null,
     "review_status":null,
-    "possible_overlap":false
+    "possible_overlap":true
   },
   {
     "record_id":"b76bed76638f4edbcba7",
@@ -14013,7 +14013,7 @@
     "source_row":7,
     "sample_id":"P01",
     "paper":"Asapu et al., Front. Mater. 9:969188 (2022)",
-    "doi":"10.3389\/fmats.2022.969188\/full",
+    "doi":"10.3389\/fmats.2022.969188",
     "source_url":"https:\/\/www.frontiersin.org\/journals\/materials\/articles\/10.3389\/fmats.2022.969188\/full",
     "source_locator":null,
     "metric":"2Pr",
@@ -14073,7 +14073,7 @@
     "measurement_definition":null,
     "original_structure":null,
     "review_status":null,
-    "possible_overlap":false
+    "possible_overlap":true
   },
   {
     "record_id":"d4825f9affe1e8b37467",
@@ -14082,7 +14082,7 @@
     "source_row":8,
     "sample_id":"P01",
     "paper":"Asapu et al., Front. Mater. 9:969188 (2022)",
-    "doi":"10.3389\/fmats.2022.969188\/full",
+    "doi":"10.3389\/fmats.2022.969188",
     "source_url":"https:\/\/www.frontiersin.org\/journals\/materials\/articles\/10.3389\/fmats.2022.969188\/full",
     "source_locator":null,
     "metric":"2Pr",
@@ -14142,7 +14142,7 @@
     "measurement_definition":null,
     "original_structure":null,
     "review_status":null,
-    "possible_overlap":false
+    "possible_overlap":true
   },
   {
     "record_id":"ade71126f9e63ac4029f",
@@ -14151,7 +14151,7 @@
     "source_row":9,
     "sample_id":"P01",
     "paper":"Asapu et al., Front. Mater. 9:969188 (2022)",
-    "doi":"10.3389\/fmats.2022.969188\/full",
+    "doi":"10.3389\/fmats.2022.969188",
     "source_url":"https:\/\/www.frontiersin.org\/journals\/materials\/articles\/10.3389\/fmats.2022.969188\/full",
     "source_locator":null,
     "metric":"2Pr",
@@ -14211,7 +14211,7 @@
     "measurement_definition":null,
     "original_structure":null,
     "review_status":null,
-    "possible_overlap":false
+    "possible_overlap":true
   },
   {
     "record_id":"4bbde21507da4053873f",
@@ -14220,7 +14220,7 @@
     "source_row":10,
     "sample_id":"P01",
     "paper":"Asapu et al., Front. Mater. 9:969188 (2022)",
-    "doi":"10.3389\/fmats.2022.969188\/full",
+    "doi":"10.3389\/fmats.2022.969188",
     "source_url":"https:\/\/www.frontiersin.org\/journals\/materials\/articles\/10.3389\/fmats.2022.969188\/full",
     "source_locator":null,
     "metric":"no_2Pr_label",

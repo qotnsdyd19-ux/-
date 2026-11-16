@@ -28,3 +28,13 @@ jobs:
           trap 'kill "$static_pid" "$streamlit_pid"' EXIT
           curl --retry 20 --retry-connrefused --retry-delay 1 --fail http://127.0.0.1:8501/_stcore/health
           python scripts/browser_smoke.py
+          python tests/browser_inference.py
+      - name: Container startup and unavailable-model checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker build -t hzo-inference-ci .
+          hzo_container=$(docker run --detach --rm --env HZO_MODEL_DIR=/tmp/hzo-no-models --publish 127.0.0.1:9080:8080 hzo-inference-ci)
+          trap 'docker stop "$hzo_container"' EXIT
+          curl --retry 20 --retry-connrefused --retry-delay 1 --fail http://127.0.0.1:9080/healthz
+          python -c 'import requests; assert requests.get("http://127.0.0.1:9080/readyz").status_code == 503; assert requests.get("http://127.0.0.1:9080/v1/models").json()["models"] == []'

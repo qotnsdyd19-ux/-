@@ -21,6 +21,7 @@
 
     * { box-sizing: border-box; }
     td details { max-width: 360px; overflow-wrap: anywhere; }
+    .result-value #resultNumber { font-size: inherit; color: var(--mint); }
 
     html {
       scroll-behavior: smooth;
@@ -610,7 +611,7 @@
 
       <div class="stat">
         <span>활성 예측 모델</span>
-        <strong>없음</strong>
+        <strong id="activeModelCount">없음</strong>
         <small>결과 숫자를 임의 생성하지 않음</small>
       </div>
     </section>
@@ -730,6 +731,8 @@
                 <option>PUND</option>
               </select>
             </label>
+            <label>측정 상태<select id="measurementStateInput" required><option>pristine</option><option>wake-up</option><option>cycled</option></select></label>
+            <label>예측 대상<select id="predictionTarget"><option value="2Pr">2Pr</option><option value="Endurance">Endurance (검증 모델 필요)</option></select></label>
           </div>
 
           <details>
@@ -768,9 +771,13 @@
             </div>
 
             <p class="caption">
-              삽입층·다층 구조는 Phase 1 기본 예측 범위 밖입니다.
+              삽입층·다층 구조는 기본 MFM 예측 범위 밖입니다.
             </p>
           </details>
+          <div class="fields">
+            <label>측정 펄스폭 (s)<input id="pulseInput" type="number" min="0" step="any" placeholder="미기재"></label>
+            <label>측정 주파수 (Hz)<input id="frequencyInput" type="number" min="0" step="any" placeholder="미기재"></label>
+          </div>
         </form>
 
         <!-- 버튼은 form과 details 바깥에 항상 표시됩니다. -->
@@ -794,23 +801,26 @@
 
         <button id="predictButton" class="primary" disabled>2Pr 예측 · 검증 모델 없음</button>
         <p id="predictionStatus" class="caption" role="status">승인 0행 · 모델 없음 · 예측/최적 조건 추천 비활성화. MAE/RMSE/R²: N/A</p>
+        <p id="engineStatus" class="caption" role="status">추론 서버 배포 상태 확인 중…</p>
+        <details><summary>선택한 모델의 검증 결과·입력 범위</summary><pre id="modelDetails" style="white-space:pre-wrap;overflow-wrap:anywhere">연결된 검증 모델 없음</pre></details>
+        <button id="downloadPrediction" type="button" class="secondary" disabled>예측 결과 CSV 저장</button>
         <div class="result-card">
           <div class="result-header">
-            <span>REMANENT POLARIZATION</span>
-            <span class="tag">모델 없음</span>
+            <span id="resultHeading">REMANENT POLARIZATION</span>
+            <span class="tag" id="resultVersion">모델 없음</span>
           </div>
 
           <h2 id="resultTarget">2P<sub>r</sub></h2>
 
           <div class="result-value">
-            — <span id="resultUnit">μC/cm²</span>
+            <span id="resultNumber">—</span> <span id="resultUnit">μC/cm²</span>
           </div>
 
-          <p class="muted">
+          <p class="muted" id="resultExplanation">
             검증된 학습 모델이 없어 예측값을 표시하지 않습니다.
           </p>
 
-          <div class="result-footer">
+          <div class="result-footer" id="resultFooter">
             AWAITING VALIDATED MODEL
           </div>
         </div>
@@ -821,9 +831,9 @@
 
           <ul>
             <li><span>정적 사이트의 모델 학습</span><b>지원 안 함</b></li>
-            <li><span>학습 승인 상태</span><b>0행 · 원문 검토 대기</b></li>
-            <li><span>DOI 분리 모델 검증</span><b>승인 부족으로 차단</b></li>
-            <li><span>MAE · RMSE · R²</span><b>N/A</b></li>
+            <li><span>선택한 모델의 승인 상태</span><b id="approvedModelRows">0행 · 원문 검토 대기</b></li>
+            <li><span>DOI 분리 모델 검증</span><b id="validationStatus">승인 부족으로 차단</b></li>
+            <li><span>MAE · RMSE · R²</span><b id="selectedMetrics">N/A</b></li>
             <li><span>보정된 예측구간</span><b>N/A</b></li>
           </ul>
 
@@ -1112,6 +1122,7 @@
   </footer>
 
   <script type="module" src="site.js"></script>
+  <script type="module" src="inference.js"></script>
 
 </body>
 </html>

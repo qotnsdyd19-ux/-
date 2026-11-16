@@ -33,7 +33,13 @@ def number(value):
 def normalize_doi(value):
     if not value: return None
     match = re.search(r'10\.\d{4,9}/[^\s?#]+',str(value),re.I)
-    return match.group(0).rstrip('/.,').lower() if match else None
+    if not match: return None
+    doi=match.group(0).rstrip('/.,').lower()
+    # Frontiers appends a rendering route to the DOI in article URLs.
+    # It is not part of the DOI and must not create a second validation group.
+    if doi.startswith('10.3389/'):
+        doi=re.sub(r'/(?:full|pdf|abstract)$','',doi)
+    return doi
 
 def frame(rows):
     df = pd.DataFrame(rows).reindex(columns=SCHEMA)

@@ -27,6 +27,12 @@ def test_insufficient_groups_cannot_train(tmp_path):
     with pytest.raises(ValueError): train(df,tmp_path)
     assert not list(tmp_path.iterdir())
 
+def test_p_e_and_pund_are_not_combined_to_pass_minimum_count(tmp_path):
+    df=fixture();df.loc[:14,'measurement_method']='P-E'
+    with pytest.raises(ValueError,match='별도 모델'):train(df,tmp_path)
+    with pytest.raises(ValueError,match='동일 측정 방법'):train(df,tmp_path,method='PUND')
+    assert not list(tmp_path.iterdir())
+
 def test_approval_is_not_enough_to_include_bad_scope():
     df=fixture()
     for column,value in [('anneal_type','MICROWAVE_ANNEAL'),('metric','Pr'),('composition','Zr x=0.55'),('structure','MFIM'),('scope_verified',False),('measurement_method','unknown'),('hzo_nm',None),('top_interlayer_nm',5)]:

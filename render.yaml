@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: hzo-verified-inference
+    runtime: docker
+    plan: free
+    healthCheckPath: /healthz
+    envVars:
+      - key: HZO_CORS_ORIGINS
+        value: https://qotnsdyd19-ux.github.io
+      - key: HZO_MODEL_DIR
+        value: /app/models

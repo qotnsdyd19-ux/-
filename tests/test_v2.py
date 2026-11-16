@@ -77,3 +77,4 @@ def test_javascript_syntax_and_external_module():
     assert '<script type="module" src="site.js"></script>' in html
     assert not re.search(r'<script>\s*\S',html)
     subprocess.run(['node','--check',str(ROOT/'docs/site.js')],check=True,capture_output=True)
+    subprocess.run(['node','--check',str(ROOT/'docs/inference.js')],check=True,capture_output=True)

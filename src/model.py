@@ -68,8 +68,9 @@ def eligible(df):
     flags=df.apply(lambda row:len(reasons(row))==0,axis=1)
     return df.loc[flags & ~duplicate_candidates(df)].copy()
 
-def readiness(df):
+def readiness(df,method=None):
     good=eligible(df)
+    if method:good=good[good.measurement_method.eq(method)]
     return len(good)>=MIN_ROWS and good.doi.nunique()>=MIN_DOIS
 
 def pipeline():
@@ -85,9 +86,11 @@ def scores(y,p):
 def group_splits(df):
     return list(GroupKFold(n_splits=min(MIN_DOIS,df.doi.nunique())).split(df,df.two_pr,groups=df.doi))
 
-def train(df,folder='artifacts/models'):
-    if not readiness(df): raise ValueError(f'승인된 {MIN_ROWS}개 관측치 및 {MIN_DOIS}개 DOI가 필요합니다.')
+def train(df,folder='artifacts/models',method=None):
+    if not readiness(df,method): raise ValueError(f'동일 측정 방법으로 승인된 {MIN_ROWS}개 관측치 및 {MIN_DOIS}개 DOI가 필요합니다.')
     good=eligible(df).reset_index(drop=True)
+    if method:good=good[good.measurement_method.eq(method)].reset_index(drop=True)
+    if good.measurement_method.nunique()!=1:raise ValueError('P-E와 PUND는 별도 모델로 학습해야 합니다.')
     x=good[NUM+CAT].copy(); x=x.where(x.notna(),np.nan); y=good.two_pr.to_numpy()
     pred=np.empty(len(good)); base=np.empty(len(good)); folds=[]
     for train_i,test_i in group_splits(good):
@@ -95,7 +98,11 @@ def train(df,folder='artifacts/models'):
         d=DummyRegressor(strategy='mean'); d.fit(x.iloc[train_i],y[train_i]); base[test_i]=d.predict(x.iloc[test_i])
         folds.append(dict(train_dois=sorted(good.iloc[train_i].doi.unique()),test_dois=sorted(good.iloc[test_i].doi.unique()),test_records=len(test_i)))
     report=dict(forest=scores(y,pred),baseline=scores(y,base),folds=folds,rows=len(good),dois=int(good.doi.nunique()))
-    report['active']=report['forest']['MAE']<report['baseline']['MAE']
+    improvement=1-report['forest']['MAE']/report['baseline']['MAE'] if report['baseline']['MAE']>0 else 0
+    report['relative_mae_improvement']=improvement
+    report['active']=improvement>=0.05 and (report['forest']['R2'] or 0)>0
+    report.update(structure='MFM',target='2Pr',unit='μC/cm²',measurement_method=good.measurement_method.iloc[0],
+                  validation='DOI-grouped out-of-fold',limitations='소수 논문 검증의 연구용 추정. 인과·공정 보증 및 보정된 예측구간 없음.')
     report['dataset_hash']=fingerprint(df)
     report['version']=datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')+'-'+report['dataset_hash'][:8]
     fitted=pipeline(); fitted.fit(x,y)
