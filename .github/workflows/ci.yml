@@ -35,6 +35,12 @@ jobs:
           set -euo pipefail
           docker build -t hzo-inference-ci .
           hzo_container=$(docker run --detach --rm --env HZO_MODEL_DIR=/tmp/hzo-no-models --publish 127.0.0.1:9080:8080 hzo-inference-ci)
-          trap 'docker stop "$hzo_container"' EXIT
-          curl --retry 20 --retry-connrefused --retry-delay 1 --fail http://127.0.0.1:9080/healthz
+          cleanup() {
+            hzo_exit=$?
+            docker logs "$hzo_container" || true
+            docker stop "$hzo_container" || true
+            exit "$hzo_exit"
+          }
+          trap cleanup EXIT
+          curl --retry 20 --retry-all-errors --retry-delay 1 --retry-max-time 60 --max-time 5 --fail http://127.0.0.1:9080/healthz
           python -c 'import requests; assert requests.get("http://127.0.0.1:9080/readyz").status_code == 503; assert requests.get("http://127.0.0.1:9080/v1/models").json()["models"] == []'
